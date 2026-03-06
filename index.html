@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -32,9 +33,11 @@
                             blue: '#50A7DA',
                             navy: '#202246',
                             orange: '#F59C40',
+                            yellow: '#FADB5E',
                             light: '#EAF3FA',
                             text: '#4A5568',
-                            green: '#3CC29A'
+                            green: '#3CC29A',
+                            red: '#FF806F'
                         }
                     },
                     boxShadow: {
@@ -89,19 +92,6 @@
             height: 300px;
         }
 
-        /* Custom Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         @keyframes float {
             0% {
                 transform: translateY(0px);
@@ -128,27 +118,6 @@
             border: 1px solid #e2e8f0;
         }
 
-        .animate-fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0;
-        }
-
-        .delay-100 {
-            animation-delay: 0.1s;
-        }
-
-        .delay-200 {
-            animation-delay: 0.2s;
-        }
-
-        .delay-300 {
-            animation-delay: 0.3s;
-        }
-
-        .delay-400 {
-            animation-delay: 0.4s;
-        }
-
         .animate-float {
             animation: float 6s ease-in-out infinite;
         }
@@ -161,14 +130,11 @@
 
         .nav-link {
             border-color: #202246;
-            /* Navy border */
             color: #202246;
-            /* Navy text */
             transition: all 0.3s ease;
         }
 
         .nav-link:hover {
-            background-color: #202246;
             color: white;
         }
 
@@ -181,11 +147,10 @@
             transition: .5s ease all;
         }
 
-        /* Scrolled Navbar Override (Shrink Effect) */
+        /* Scrolled Navbar Override */
         #main-header.is-scrolled {
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
             background-color: rgba(255, 255, 255, 0.98);
-            /* Slight transparency looks nice when scrolling */
         }
 
         #main-header.is-scrolled a.logo {
@@ -217,52 +182,6 @@
             }
         }
 
-        /* Auto-Vertical Scroll */
-        @keyframes verticalScroll {
-
-            0%,
-            20% {
-                transform: translateY(0);
-            }
-
-            25%,
-            45% {
-                transform: translateY(-20%);
-            }
-
-            50%,
-            70% {
-                transform: translateY(-40%);
-            }
-
-            75%,
-            95% {
-                transform: translateY(-60%);
-            }
-
-            100% {
-                transform: translateY(-80%);
-            }
-        }
-
-        .scrolling-text-container {
-            display: inline-flex;
-            flex-direction: column;
-            overflow: hidden;
-            vertical-align: bottom;
-            position: relative;
-        }
-
-        .scrolling-text-inner {
-            display: flex;
-            flex-direction: column;
-            animation: verticalScroll 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-
-        .scrolling-text-inner>span {
-            white-space: nowrap;
-        }
-
         /* Static SVG Shape Dividers */
         .shape-divider {
             position: absolute;
@@ -271,7 +190,6 @@
             width: 100%;
             overflow: hidden;
             line-height: 0;
-            z-index: 5;
         }
 
         .shape-divider svg {
@@ -301,95 +219,136 @@
         .will-change-transform {
             will-change: transform;
         }
+
+        /* GSAP Initial Visibility Blocker */
+        .gsap-child {
+            visibility: hidden;
+        }
+
+        /* --- PRELOADER STYLES --- */
+        #page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffffff;
+            z-index: 99999;
+            /* Stay above header */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            will-change: transform;
+        }
     </style>
 </head>
 
 <body class="font-sans text-brand-text bg-white antialiased overflow-x-hidden">
 
+    <div id="page-loader">
+        <div id="loader-logo" class="font-display text-4xl md:text-6xl font-extrabold tracking-tighter opacity-0">
+            <span class="text-brand-navy">fair</span><span class="text-[#50A7DA]">.com.au</span>
+        </div>
+    </div>
+
     <header id="main-header" class="fixed top-0 left-0 w-full z-[100] transition-all duration-300">
-        <nav class="container mx-auto px-6 flex justify-between items-center relative">
-            <a href="#" class="logo rounded-xl-ml-8 w-60 md:w-80 flex items-center justify-center">
-                <img src="./images/output-onlinegiftools.gif" alt="Fair Health Logo"
-                    class="w-full h-auto mix-blend-multiply"
-                    onerror="this.src='https://via.placeholder.com/300x80?text=Fair.com.au'">
-            </a>
+        <nav class="fixed top-0 w-full z-[100] px-6 py-4 transition-transform duration-500">
+            <div
+                class="max-w-7xl mx-auto flex justify-between items-center bg-[#F6FBFF]/80 backdrop-blur-xl rounded-full px-8 py-5 border border-white/40 shadow-sm">
+                <div class="flex items-center gap-1">
+                    <span class="font-display text-2xl font-extrabold tracking-tighter flex items-center">
+                        fair<span class="text-[#50A7DA]">.com.au</span>
+                    </span>
+                </div>
 
-            <div class="hidden lg:flex space-x-4 items-center">
-                <div class="relative group">
-                    <a href="#"
-                        class="nav-link hover:bg-brand-blue hover:border-brand-blue px-5 py-2 rounded-full border text-sm font-medium flex items-center gap-1.5 cursor-pointer">
-                        Insurance <i
-                            class="fas fa-chevron-down text-[10px] mt-0.5 group-hover:rotate-180 transition-transform duration-200"></i>
-                    </a>
-
-                    <div
-                        class="absolute left-0 top-full pt-4 w-[420px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[110]">
+                <div class="hidden md:flex items-center gap-2">
+                    <div class="relative group">
+                        <button
+                            class="nav-link flex items-center min-h-[40px] rounded-full border border-brand-navy hover:bg-brand-blue hover:border-brand-blue py-2 px-4 relative text-sm font-semibold uppercase tracking-wider flex items-center gap-1">
+                            Health Insurance <i data-lucide="chevron-down"
+                                class="w-3 h-3 group-hover:rotate-180 transition-transform"></i>
+                        </button>
                         <div
-                            class="bg-white rounded-[20px] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] p-8 border border-gray-100">
-                            <div class="grid grid-cols-2 gap-8">
+                            class="absolute top-full left-1/2 -translate-x-1/2 w-[600px] bg-white rounded-3xl shadow-xl border border-slate-100 p-8 invisible opacity-0 translate-y-4 transition-all duration-300 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 z-50">
+                            <div class="grid grid-cols-2 gap-12">
                                 <div>
-                                    <h3 class="text-brand-navy font-bold mb-4 text-[15px]">Cover by lifestage</h3>
-                                    <ul class="space-y-3 text-[#5A6A80] text-[14px]">
+                                    <h4 class="font-display font-bold text-brandNavy mb-4 text-lg">Cover by lifestage
+                                    </h4>
+                                    <ul class="space-y-3">
                                         <li><a href="#"
-                                                class="hover:text-brand-blue transition-colors block">Singles</a></li>
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Singles</a>
+                                        </li>
                                         <li><a href="#"
-                                                class="hover:text-brand-blue transition-colors block">Couples</a></li>
-                                        <li><a href="#" class="hover:text-brand-blue transition-colors block">Young
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Couples</a>
+                                        </li>
+                                        <li><a href="#"
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Young
                                                 Adults</a></li>
                                         <li><a href="#"
-                                                class="hover:text-brand-blue transition-colors block">Families</a></li>
-                                        <li><a href="#" class="hover:text-brand-blue transition-colors block">Over
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Families</a>
+                                        </li>
+                                        <li><a href="#"
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Over
                                                 50s</a></li>
-                                        <li><a href="#" class="hover:text-brand-blue transition-colors block">Over 60s &
-                                                70s</a></li>
+                                        <li><a href="#"
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Over
+                                                60s & 70s</a></li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h3 class="text-brand-navy font-bold mb-4 text-[15px]">Cover by needs</h3>
-                                    <ul class="space-y-3 text-[#5A6A80] text-[14px]">
-                                        <li><a href="#" class="hover:text-brand-blue transition-colors block">Dental</a>
+                                    <h4 class="font-display font-bold text-brandNavy mb-4 text-lg">Cover by needs</h4>
+                                    <ul class="space-y-3">
+                                        <li><a href="#"
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Dental</a>
                                         </li>
                                         <li><a href="#"
-                                                class="hover:text-brand-blue transition-colors block">Physiotherapy</a>
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Physiotherapy</a>
                                         </li>
                                         <li><a href="#"
-                                                class="hover:text-brand-blue transition-colors block">Optical</a></li>
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Optical</a>
+                                        </li>
                                         <li><a href="#"
-                                                class="hover:text-brand-blue transition-colors block">Massage</a></li>
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Massage</a>
+                                        </li>
                                         <li><a href="#"
-                                                class="hover:text-brand-blue transition-colors block">Hospital</a></li>
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Hospital</a>
+                                        </li>
                                         <li><a href="#"
-                                                class="hover:text-brand-blue transition-colors block">Podiatry</a></li>
+                                                class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Podiatry</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <a href="#"
-                    class="nav-link hover:bg-brand-green hover:border-brand-green px-5 py-2 rounded-full border text-sm font-medium">Utilities</a>
-                <a href="#"
-                    class="nav-link hover:bg-brand-orange hover:border-brand-orange px-5 py-2 rounded-full border text-sm font-medium">Internet</a>
-                <a href="#"
-                    class="nav-link hover:bg-yellow-400 hover:border-yellow-400 px-5 py-2 rounded-full border text-sm font-medium">Home
-                    loans</a>
-                <a href="#"
-                    class="nav-link hover:bg-red-400 hover:border-red-400 px-5 py-2 rounded-full border text-sm font-medium">About</a>
-            </div>
 
-            <div class="nav-text font-semibold flex items-center gap-2">
-                <i class="fas fa-phone-alt"></i>
-                <a href="tel:1300955601" class="hover:underline">1300 955 601</a>
+                    <a href="#"
+                        class="nav-link flex items-center min-h-[40px] rounded-full border border-brand-navy hover:bg-brand-green hover:border-brand-green px-4 relative text-sm font-semibold uppercase tracking-wider">Utilities</a>
+                    <a href="#"
+                        class="nav-link flex items-center min-h-[40px] rounded-full border border-brand-navy hover:bg-brand-orange hover:border-brand-orange px-4 relative text-sm font-semibold uppercase tracking-wider">Internet</a>
+                    <a href="#"
+                        class="nav-link flex items-center min-h-[40px] rounded-full border border-brand-navy hover:bg-brand-yellow hover:border-brand-yellow px-4 relative text-sm font-semibold uppercase tracking-wider">Home
+                        Loans</a>
+                    <a href="#"
+                        class="nav-link flex items-center min-h-[40px] rounded-full border border-brand-navy hover:bg-brand-red hover:border-brand-red px-4 relative text-sm font-semibold uppercase tracking-wider">About</a>
+
+                    <a href="tel:1300955691"
+                        class="flex justify-center items-center gap-2 text-brand-navy font-semibold ml-4">
+                        <i data-lucide="phone" class="w-3 h-3"></i> 1300 955 691
+                    </a>
+                </div>
+
+                <button class="md:hidden p-2"><i data-lucide="menu"></i></button>
             </div>
         </nav>
     </header>
 
-    <div id="hero-section" class="relative bg-brand-blue pt-52 pb-32 md:pb-48 z-10 transform-gpu">
-
-        <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-20">
-            <div class="parallax will-change-transform" data-speed="-0.05">
-                <div class="animate-fade-in-up">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold text-brand-navy mb-6 leading-tight">
+    <div id="hero-section" class="relative bg-brand-blue pt-52 pb-32 md:pb-48 z-10 transform-gpu opacity-0">
+        <div class="max-w-7xl container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-20">
+            <div class="parallax will-change-transform gsap-section" data-speed="-0.05">
+                <div>
+                    <h1
+                        class="text-4xl md:text-5xl lg:text-6xl font-semibold text-brand-navy mb-6 leading-tight gsap-child">
                         It’s time to make it <span class="relative inline-block whitespace-nowrap">
                             <span
                                 class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-brand-light to-brand-light italic font-extrabold pr-2 drop-shadow-sm">Fair</span>
@@ -400,57 +359,91 @@
                             </svg>
                         </span>
                     </h1>
-                    <p class="text-lg text-brand-navy max-w-lg mb-8 leading-relaxed">
+                    <p class="text-lg text-brand-navy max-w-lg mb-8 leading-relaxed gsap-child">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper
                         mattis, pulvinar dapibus leo.
                     </p>
 
-                    <div class="flex flex-col sm:flex-row gap-4 relative">
+                    <div class="flex flex-col sm:flex-row gap-4 relative gsap-child">
                         <div
                             class="flex-1 bg-white rounded-3xl p-4 shadow-2xl shadow-brandNavy/5 border border-slate-100 flex items-center gap-4 relative z-50">
                             <div
-                                class="w-12 h-12 rounded-2xl bg-blue-200/50 flex items-center justify-center text-brandSky shrink-0">
+                                class="w-10 h-10 rounded-2xl bg-blue-200/50 flex items-center justify-center text-[#50A7DA] shrink-0">
                                 <i data-lucide="search"></i>
                             </div>
                             <div class="flex-1 min-w-0 relative">
                                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-0.5">I'm
                                     looking for</p>
-
                                 <button id="hero-dropdown-btn"
-                                    class="w-full text-left font-bold text-brand-navy flex items-center justify-between text-lg outline-none focus:text-brandBlue transition-colors group">
+                                    class="w-full text-left font-bold text-brand-navy flex items-center justify-between text-md outline-none focus:text-[#50A7DA] transition-colors group">
                                     <span id="hero-selected-text" class="truncate">Private Health Cover</span>
                                     <i data-lucide="chevron-down"
-                                        class="w-4 h-4 text-slate-400 group-hover:text-brandBlue transition-colors"></i>
+                                        class="w-4 h-4 text-slate-400 group-hover:text-[#50A7DA] transition-colors"></i>
                                 </button>
-
                                 <div id="hero-dropdown-menu"
-                                    class="hidden absolute top-full left-0 w-full mt-6 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden z-50 p-2">
+                                    class="hidden absolute top-full left-0 w-full mt-6 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[999] p-2">
                                     <div class="space-y-1">
                                         <button
-                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-brandBlue/5 hover:text-brandBlue font-medium transition-colors flex items-center gap-3">
-                                            <i data-lucide="shield-check" class="w-4 h-4 text-slate-400"></i> Private
-                                            Health Cover
+                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                data-lucide="shield-check" aria-hidden="true"
+                                                class="lucide lucide-shield-check w-4 h-4 text-slate-400">
+                                                <path
+                                                    d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z">
+                                                </path>
+                                                <path d="m9 12 2 2 4-4"></path>
+                                            </svg>
+                                            Private Health Cover
                                         </button>
                                         <button
-                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-brandBlue/5 hover:text-brandBlue font-medium transition-colors flex items-center gap-3">
-                                            <i data-lucide="heart-handshake" class="w-4 h-4 text-slate-400"></i> NDIS
-                                            Care Management
+                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                data-lucide="heart-handshake" aria-hidden="true"
+                                                class="lucide lucide-heart-handshake w-4 h-4 text-slate-400">
+                                                <path
+                                                    d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762">
+                                                </path>
+                                            </svg>
+                                            NDIS Care Management
                                         </button>
                                         <button
-                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-brandBlue/5 hover:text-brandBlue font-medium transition-colors flex items-center gap-3">
-                                            <i data-lucide="armchair" class="w-4 h-4 text-slate-400"></i> Aged Care
-                                            Support
+                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" data-lucide="armchair"
+                                                aria-hidden="true"
+                                                class="lucide lucide-armchair w-4 h-4 text-slate-400">
+                                                <path d="M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3"></path>
+                                                <path
+                                                    d="M3 16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z">
+                                                </path>
+                                                <path d="M5 18v2"></path>
+                                                <path d="M19 18v2"></path>
+                                            </svg>
+                                            Aged Care Support
                                         </button>
                                         <button
-                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-brandBlue/5 hover:text-brandBlue font-medium transition-colors flex items-center gap-3">
-                                            <i data-lucide="zap" class="w-4 h-4 text-slate-400"></i> Energy & Utilities
+                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" data-lucide="zap"
+                                                aria-hidden="true" class="lucide lucide-zap w-4 h-4 text-slate-400">
+                                                <path
+                                                    d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z">
+                                                </path>
+                                            </svg>
+                                            Energy & Utilities
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <button
-                            class="btn-creative bg-brand-navy text-white h-auto px-10 py-6 rounded-3xl font-extrabold text-lg flex items-center justify-center gap-2 shadow-lg shadow-brandBlue/30 hover:shadow-brandBlue/50 transition-all shrink-0">
+                            class="btn-creative bg-brand-orange text-white h-auto px-8 py-4 rounded-3xl font-extrabold text-lg flex items-center justify-center gap-2 shadow-lg shadow-brandBlue/30 hover:shadow-brandBlue/50 transition-all shrink-0">
                             Compare <i data-lucide="chevron-right"></i>
                         </button>
                     </div>
@@ -461,53 +454,29 @@
                 <div
                     class="absolute inset-0 -bottom-10 -right-10 bg-gradient-to-tr from-brand-blue/70 to-brand-light/70 rounded-full blur-3xl scale-90 -z-10">
                 </div>
-                <div class="relative animate-float animate-fade-in delay-200 hidden md:block">
+                <div class="relative animate-float hidden md:block">
                     <img src="./images/FHCA-hero-image-scaled-1-1536x1030.webp" alt="Fair Health Care Alliance Family"
                         class="w-full h-auto drop-shadow-xl origin-right"
                         onerror="this.src='https://via.placeholder.com/600x400?text=Hero+Image'">
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="relative z-10">
         <div class="shape-divider">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 618 1522 56" preserveAspectRatio="none"
-                style="transform: scaleY(-1);">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none">
                 <path
-                    d="M 1522 0 H 0 V 646 Q 76.1 618 152.2 646 T 304.4 646 T 456.6 646 T 608.8 646 T 761 646 T 913.2 646 T 1065.4 646 T 1217.6 646 T 1369.8 646 T 1522 646 Z"
+                    d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
                     fill="#202246"></path>
             </svg>
         </div>
     </div>
 
-    <div class="bg-brand-navy pt-6 pb-36 relative z-20 -mt-1">
-        <div class="max-w-6xl container mx-auto px-6">
-            <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
 
-                <div class="flex items-center gap-6 animate-fade-in-up delay-100">
+    <div class="bg-brand-navy pt-6 pb-12 relative z-10">
+        <div class="max-w-6xl container mx-auto px-6 gsap-section">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div class="flex items-center gap-6 gsap-child">
                     <div class="flex -space-x-4">
-                        <div
-                            class="w-16 h-16 rounded-full border-2 border-white bg-brand-navy flex items-center justify-center relative">
-                            <i class="fas fa-award text-white text-2xl"></i>
-                            <div
-                                class="absolute -bottom-2 text-[8px] text-white bg-brand-orange px-2 py-0.5 rounded-full uppercase font-bold">
-                                Winner</div>
-                        </div>
-                        <div
-                            class="w-16 h-16 rounded-full border-2 border-white bg-brand-navy flex items-center justify-center relative z-10">
-                            <i class="fas fa-award text-white text-2xl"></i>
-                            <div
-                                class="absolute -bottom-2 text-[8px] text-white bg-brand-orange px-2 py-0.5 rounded-full uppercase font-bold">
-                                Winner</div>
-                        </div>
-                        <div
-                            class="w-16 h-16 rounded-full border-2 border-white bg-brand-navy flex items-center justify-center relative z-20">
-                            <i class="fas fa-award text-white text-2xl"></i>
-                            <div
-                                class="absolute -bottom-2 text-[8px] text-white bg-brand-orange px-2 py-0.5 rounded-full uppercase font-bold">
-                                Winner</div>
-                        </div>
+                        <img src="./images/award-winner.png" alt="">
                     </div>
                     <div class="text-white text-sm max-w-sm font-light">
                         When it comes to comparing health insurance, we're kind of a big deal! Backed by real reviews.
@@ -515,7 +484,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row items-center gap-6 animate-fade-in-up delay-200">
+                <div class="flex flex-col sm:flex-row items-center gap-6 gsap-child">
                     <div class="bg-white rounded-lg p-3 flex flex-col items-center min-w-[140px]">
                         <span class="text-xs font-bold text-gray-800 uppercase tracking-wider mb-1">Excellent</span>
                         <div class="flex text-brand-orange text-sm mb-1">
@@ -534,155 +503,141 @@
                         always based on overall value, specific to your unique circumstances.
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <div class="max-w-6xl container mx-auto px-6 relative -mt-28 z-30 animate-fade-in-up delay-300">
-        <div class="bg-white rounded-2xl p-8 md:p-12 border border-gray-100 shadow-[8px_8px_rgb(180,_212,_248)]">
-            <h2 class="text-2xl font-semibold text-center text-brand-navy mb-10">Select a comparison</h2>
+    <div class="max-w-6xl container mx-auto px-6 relative mt-[75px]">
+        <div class="bg-white rounded-3xl p-8 md:p-12 border-[4px] border-[#E0EEF8] gsap-section">
+            <h2 class="text-2xl font-semibold text-center text-brand-navy mb-10 gsap-child">Select a comparison</h2>
 
             <div class="flex justify-between items-end overflow-x-auto pb-6 gap-6 no-scrollbar">
-
-                <div class="flex flex-col items-center gap-4 group cursor-pointer min-w-[100px]">
-                    <div class="w-24 h-24 flex items-center justify-center transition-transform group-hover:scale-105">
-                        <img src="./images/FHC - ILLOS - Comms - Comparison 1 - primary.png" alt="Insurance"
-                            class="w-full h-full object-contain"
+                <div class="flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] gsap-child">
+                    <div class="w-28 h-28 flex items-center justify-center transition-transform group-hover:scale-105">
+                        <img src="./images/Group (2).png" alt="Insurance" class="w-full h-full object-contain"
                             onerror="this.src='https://via.placeholder.com/96?text=Insure'">
                     </div>
-                    <span class="bg-brand-blue text-white text-xs font-bold px-4 py-1.5 rounded-full">Insurance</span>
+                    <span class="bg-brand-blue text-white text-sm font-bold px-6 py-2 rounded-full">Insurance</span>
                 </div>
 
-                <div class="flex flex-col items-center gap-4 group cursor-pointer min-w-[100px]">
-                    <div class="w-24 h-24 flex items-center justify-center transition-transform group-hover:scale-105">
+                <div class="flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] gsap-child">
+                    <div class="w-28 h-28 flex items-center justify-center transition-transform group-hover:scale-105">
                         <img src="./images/FHC - ILLOS - People - Guy 1 - primary.png" alt="Utilities"
                             class="w-full h-full object-contain"
                             onerror="this.src='https://via.placeholder.com/96?text=Util'">
                     </div>
-                    <span class="bg-brand-green text-white text-xs font-bold px-4 py-1.5 rounded-full">Utilities</span>
+                    <span class="bg-brand-green text-white text-sm font-bold px-6 py-2 rounded-full">Utilities</span>
                 </div>
 
-                <div class="flex flex-col items-center gap-4 group cursor-pointer min-w-[100px]">
-                    <div class="w-24 h-24 flex items-center justify-center transition-transform group-hover:scale-105">
+                <div class="flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] gsap-child">
+                    <div class="w-28 h-28 flex items-center justify-center transition-transform group-hover:scale-105">
                         <img src="./images/FHC - ILLOS - People - Couple 2 - primary.png" alt="Internet"
                             class="w-full h-full object-contain"
                             onerror="this.src='https://via.placeholder.com/96?text=Net'">
                     </div>
-                    <span class="bg-brand-orange text-white text-xs font-bold px-4 py-1.5 rounded-full">Internet</span>
+                    <span class="bg-brand-orange text-white text-sm font-bold px-6 py-2 rounded-full">Internet</span>
                 </div>
 
-                <div class="flex flex-col items-center gap-4 group cursor-pointer min-w-[100px]">
-                    <div class="w-24 h-24 flex items-center justify-center transition-transform group-hover:scale-105">
+                <div class="flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] gsap-child">
+                    <div class="w-28 h-28 flex items-center justify-center transition-transform group-hover:scale-105">
                         <img src="./images/FHC - ILLOS - People - Family 2 - primary.png" alt="Home loans"
                             class="w-full h-full object-contain"
                             onerror="this.src='https://via.placeholder.com/96?text=Loans'">
                     </div>
-                    <span class="bg-yellow-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">Home
-                        loans</span>
+                    <span class="bg-yellow-400 text-white text-sm font-bold px-6 py-2 rounded-full">Home loans</span>
                 </div>
 
-                <div class="flex flex-col items-center gap-4 group cursor-pointer min-w-[100px]">
-                    <div class="w-24 h-24 flex items-center justify-center transition-transform group-hover:scale-105">
+                <div class="flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] gsap-child">
+                    <div class="w-28 h-28 flex items-center justify-center transition-transform group-hover:scale-105">
                         <img src="./images/FHC - ILLOS - People - Mother 1 - primary.png" alt="About"
                             class="w-full h-full object-contain"
                             onerror="this.src='https://via.placeholder.com/96?text=About'">
                     </div>
-                    <span class="bg-red-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">About</span>
+                    <span class="bg-red-400 text-white text-sm font-bold px-6 py-2 rounded-full">About</span>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <div class="py-20 bg-white relative z-10">
+    <div class="py-20 bg-white relative z-10 gsap-section">
         <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-semibold text-brand-navy mb-12">Brands we compare</h2>
-
+            <h2 class="text-3xl font-semibold text-brand-navy mb-12 gsap-child">Brands we compare</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
-                <img src="./images/logos/AGL-Logo 1.png" alt="">
-                <img src="./images/logos/ahm-logo-png-1-1 1.png" alt="">
-                <img src="./images/logos/au-seniors 1.png" alt="">
-                <img src="./images/logos/Australian_Unity_Logo 1.png" alt="">
-                <img src="./images/logos/Dodo-logo-white-OL.png 1.png" alt="">
-                <img src="./images/logos/energy-powershop-australia.jpg 1.png" alt="">
-                <!-- <img src="./images/logos/gmhba 1.png" alt=""> -->
-                <img src="./images/logos/HCF_2013 1.png" alt="">
-                <!-- <img src="./images/logos/hif 1.png" alt=""> -->
-                <img src="./images/logos/nib_RGB_PrimaryLogo_TrueGreen 1.png" alt="">
-                <img src="./images/logos/ORG.AX_BIG 1.png" alt="">
-                <img src="./images/logos/site-logo 1.png" alt="">
+                <img src="./images/logos/AGL-Logo 1.png" alt="" class="gsap-child">
+                <img src="./images/logos/ahm-logo-png-1-1 1.png" alt="" class="gsap-child">
+                <img src="./images/logos/au-seniors 1.png" alt="" class="gsap-child">
+                <img src="./images/logos/Australian_Unity_Logo 1.png" alt="" class="gsap-child">
+                <img src="./images/logos/Dodo-logo-white-OL.png 1.png" alt="" class="gsap-child">
+                <img src="./images/logos/energy-powershop-australia.jpg 1.png" alt="" class="gsap-child">
+                <img src="./images/logos/HCF_2013 1.png" alt="" class="gsap-child">
+                <img src="./images/logos/nib_RGB_PrimaryLogo_TrueGreen 1.png" alt="" class="gsap-child">
+                <img src="./images/logos/ORG.AX_BIG 1.png" alt="" class="gsap-child">
+                <img src="./images/logos/site-logo 1.png" alt="" class="gsap-child">
             </div>
         </div>
     </div>
 
     <div class="relative py-32 mt-10 overflow-hidden bg-brand-light">
-
         <div class="shape-divider" style="top: -1px; bottom: auto;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 618 1522 56" preserveAspectRatio="none">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none"
+                style="background: #fff;">
                 <path
-                    d="M 1522 0 H 0 V 646 Q 76.1 618 152.2 646 T 304.4 646 T 456.6 646 T 608.8 646 T 761 646 T 913.2 646 T 1065.4 646 T 1217.6 646 T 1369.8 646 T 1522 646 Z"
-                    fill="#ffffff"></path>
+                    d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
+                    fill="#eaf3fa"></path>
             </svg>
         </div>
 
-        <div class="container mx-auto px-6 py-8 text-center relative z-10">
-            <h2 class="text-3xl font-semibold text-brand-navy mb-16">
+        <div class="container mx-auto px-6 py-8 text-center relative z-10 gsap-section">
+            <h2 class="text-3xl font-semibold text-brand-navy mb-16 gsap-child">
                 Why should you <span class="text-brand-blue italic">get a Fair go</span> with us?
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
-
-                <div class="flex flex-col items-center text-center animate-fade-in-up">
+                <div class="flex flex-col items-center text-center gsap-child">
                     <div class="w-32 h-32 mb-6 relative flex items-center justify-center">
                         <img src="./images/FHC - ILLOS - People - Couple 2 - primary.png" alt="You can trust us"
                             class="w-full h-full object-contain"
                             onerror="this.src='https://via.placeholder.com/128?text=Trust'">
                     </div>
                     <h3 class="text-xl font-bold text-brand-navy mb-3">You can trust us</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        We've won comparison website of the year the last 3 years running.
-                    </p>
+                    <p class="text-sm text-gray-600 leading-relaxed">We've won comparison website of the year the last 3
+                        years running.</p>
                 </div>
 
-                <div class="flex flex-col items-center text-center animate-fade-in-up delay-100">
+                <div class="flex flex-col items-center text-center gsap-child">
                     <div class="w-32 h-32 mb-6 relative flex items-center justify-center">
                         <img src="./images/FHC - ILLOS - People - Guy 1 - primary.png" alt="We'll save you money"
                             class="w-full h-full object-contain"
                             onerror="this.src='https://via.placeholder.com/128?text=Save'">
                     </div>
                     <h3 class="text-xl font-bold text-brand-navy mb-3">We'll save you money</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        We regularly save customers over hundreds of dollars a year by switching providers.
-                    </p>
+                    <p class="text-sm text-gray-600 leading-relaxed">We regularly save customers over hundreds of
+                        dollars a year by switching providers.</p>
                 </div>
 
-                <div class="flex flex-col items-center text-center animate-fade-in-up delay-200">
+                <div class="flex flex-col items-center text-center gsap-child">
                     <div class="w-32 h-32 mb-6 relative flex items-center justify-center">
                         <img src="./images/FHC - ILLOS - Comms - Comparison 1 - primary.png" alt="It's completely free!"
                             class="w-full h-full object-contain"
                             onerror="this.src='https://via.placeholder.com/128?text=Free'">
                     </div>
                     <h3 class="text-xl font-bold text-brand-navy mb-3">It's completely free!</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        We don't cost a cent! Our providers pay us for the service.
-                    </p>
+                    <p class="text-sm text-gray-600 leading-relaxed">We don't cost a cent! Our providers pay us for the
+                        service.</p>
                 </div>
-
             </div>
         </div>
 
         <div class="shape-divider">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 618 1522 56" preserveAspectRatio="none"
-                style="transform: scaleY(-1);">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none"
+                style="background: #eaf3fa;">
                 <path
-                    d="M 1522 0 H 0 V 646 Q 76.1 618 152.2 646 T 304.4 646 T 456.6 646 T 608.8 646 T 761 646 T 913.2 646 T 1065.4 646 T 1217.6 646 T 1369.8 646 T 1522 646 Z"
-                    fill="#ffffff"></path>
+                    d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
+                    fill="#fff"></path>
             </svg>
         </div>
     </div>
 
-    <!-- Review Marquee Section -->
     <section class="pt-16 pb-48 bg-white overflow-hidden border-y border-slate-100 relative">
         <div class="text-center mb-10">
             <h3 class="font-display text-2xl font-bold text-brandNavy">Loved by Australians</h3>
@@ -696,9 +651,71 @@
             </div>
         </div>
 
-        <div class="relative w-full">
-            <div class="flex w-[200%] animate-marquee hover:[animation-play-state:paused]">
-                <div class="flex">
+        <div class="relative w-full overflow-hidden">
+            <div class="flex w-max animate-marquee hover:[animation-play-state:paused] py-2">
+
+                <div class="flex shrink-0">
+                    <div class="review-card">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div
+                                class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">
+                                SJ</div>
+                            <div>
+                                <p class="font-bold text-sm">Sarah Jenkins</p>
+                                <p class="text-xs text-slate-400">2 days ago</p>
+                            </div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                                class="w-5 h-5 ml-auto" alt="Google">
+                        </div>
+                        <p class="text-sm text-slate-600 italic">"Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Found a better deal in minutes!"</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
+                                MK</div>
+                            <div>
+                                <p class="font-bold text-sm">Mike K.</p>
+                                <p class="text-xs text-slate-400">1 week ago</p>
+                            </div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                                class="w-5 h-5 ml-auto" alt="Google">
+                        </div>
+                        <p class="text-sm text-slate-600 italic">"Super transparent. No hidden fees. The team was
+                            incredibly helpful with my NDIS plan."</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div
+                                class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">
+                                AL</div>
+                            <div>
+                                <p class="font-bold text-sm">Amanda Lee</p>
+                                <p class="text-xs text-slate-400">3 days ago</p>
+                            </div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                                class="w-5 h-5 ml-auto" alt="Google">
+                        </div>
+                        <p class="text-sm text-slate-600 italic">"Finally a site that is actually fair. Saved me $500 on
+                            my hospital cover."</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div
+                                class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold">
+                                TR</div>
+                            <div>
+                                <p class="font-bold text-sm">Tom Richards</p>
+                                <p class="text-xs text-slate-400">Yesterday</p>
+                            </div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                                class="w-5 h-5 ml-auto" alt="Google">
+                        </div>
+                        <p class="text-sm text-slate-600 italic">"Lorem ipsum dolor sit amet. Great experience from
+                            start to finish."</p>
+                    </div>
+
                     <div class="review-card">
                         <div class="flex items-center gap-3 mb-3">
                             <div
@@ -760,8 +777,68 @@
                             start to finish."</p>
                     </div>
                 </div>
-                <!-- Clone for loop -->
-                <div class="flex">
+
+                <div class="flex shrink-0">
+                    <div class="review-card">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div
+                                class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">
+                                SJ</div>
+                            <div>
+                                <p class="font-bold text-sm">Sarah Jenkins</p>
+                                <p class="text-xs text-slate-400">2 days ago</p>
+                            </div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                                class="w-5 h-5 ml-auto" alt="Google">
+                        </div>
+                        <p class="text-sm text-slate-600 italic">"Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Found a better deal in minutes!"</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
+                                MK</div>
+                            <div>
+                                <p class="font-bold text-sm">Mike K.</p>
+                                <p class="text-xs text-slate-400">1 week ago</p>
+                            </div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                                class="w-5 h-5 ml-auto" alt="Google">
+                        </div>
+                        <p class="text-sm text-slate-600 italic">"Super transparent. No hidden fees. The team was
+                            incredibly helpful with my NDIS plan."</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div
+                                class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">
+                                AL</div>
+                            <div>
+                                <p class="font-bold text-sm">Amanda Lee</p>
+                                <p class="text-xs text-slate-400">3 days ago</p>
+                            </div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                                class="w-5 h-5 ml-auto" alt="Google">
+                        </div>
+                        <p class="text-sm text-slate-600 italic">"Finally a site that is actually fair. Saved me $500 on
+                            my hospital cover."</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div
+                                class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold">
+                                TR</div>
+                            <div>
+                                <p class="font-bold text-sm">Tom Richards</p>
+                                <p class="text-xs text-slate-400">Yesterday</p>
+                            </div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                                class="w-5 h-5 ml-auto" alt="Google">
+                        </div>
+                        <p class="text-sm text-slate-600 italic">"Lorem ipsum dolor sit amet. Great experience from
+                            start to finish."</p>
+                    </div>
                     <div class="review-card">
                         <div class="flex items-center gap-3 mb-3">
                             <div
@@ -824,29 +901,30 @@
                     </div>
                 </div>
             </div>
+
             <div
-                class="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-white to-transparent pointer-events-none">
+                class="absolute top-0 left-0 w-16 md:w-32 h-full bg-gradient-to-r from-white to-transparent pointer-events-none z-10">
             </div>
             <div
-                class="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-white to-transparent pointer-events-none">
+                class="absolute top-0 right-0 w-16 md:w-32 h-full bg-gradient-to-l from-white to-transparent pointer-events-none z-10">
             </div>
         </div>
+
         <div class="shape-divider z-20">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 618 1522 56" preserveAspectRatio="none"
-                style="transform: scaleY(-1);">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none"
+                style="background: #fff;">
                 <path
-                    d="M 1522 0 H 0 V 646 Q 76.1 618 152.2 646 T 304.4 646 T 456.6 646 T 608.8 646 T 761 646 T 913.2 646 T 1065.4 646 T 1217.6 646 T 1369.8 646 T 1522 646 Z"
+                    d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
                     fill="#202246"></path>
             </svg>
         </div>
     </section>
 
-
     <footer class="bg-brand-navy text-white pt-16 pb-8 relative z-30 -mt-1">
-        <div class="container mx-auto px-6">
+        <div class="max-w-7xl container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 gsap-section">
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-                <div>
+                <div class="gsap-child">
                     <h4 class="font-bold text-lg mb-4">Compare</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
                         <li><a href="#" class="hover:text-brand-orange transition-colors">Health insurance</a></li>
@@ -856,7 +934,7 @@
                     </ul>
                 </div>
 
-                <div>
+                <div class="gsap-child">
                     <h4 class="font-bold text-lg mb-4">Contact</h4>
                     <ul class="space-y-4 text-sm text-gray-300">
                         <li class="flex items-start gap-3">
@@ -875,7 +953,7 @@
                     </ul>
                 </div>
 
-                <div>
+                <div class="gsap-child">
                     <h4 class="font-bold text-lg mb-4">Company</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
                         <li><a href="#" class="hover:text-brand-orange transition-colors">Blog</a></li>
@@ -887,21 +965,18 @@
                     </ul>
                 </div>
 
-                <div>
+                <div class="gsap-child">
                     <h4 class="font-bold text-lg mb-4">Connect</h4>
                     <div class="flex gap-4">
                         <a href="#"
-                            class="w-8 h-8 rounded-full border border-gray-500 flex items-center justify-center hover:bg-brand-orange hover:border-brand-orange transition-all">
-                            <i class="fab fa-instagram"></i>
-                        </a>
+                            class="w-8 h-8 rounded-full border border-gray-500 flex items-center justify-center hover:bg-brand-orange hover:border-brand-orange transition-all"><i
+                                class="fab fa-instagram"></i></a>
                         <a href="#"
-                            class="w-8 h-8 rounded-full border border-gray-500 flex items-center justify-center hover:bg-brand-orange hover:border-brand-orange transition-all">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
+                            class="w-8 h-8 rounded-full border border-gray-500 flex items-center justify-center hover:bg-brand-orange hover:border-brand-orange transition-all"><i
+                                class="fab fa-facebook-f"></i></a>
                         <a href="#"
-                            class="w-8 h-8 rounded-full border border-gray-500 flex items-center justify-center hover:bg-brand-orange hover:border-brand-orange transition-all">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
+                            class="w-8 h-8 rounded-full border border-gray-500 flex items-center justify-center hover:bg-brand-orange hover:border-brand-orange transition-all"><i
+                                class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
             </div>
@@ -915,22 +990,13 @@
                     <p>&copy; 2026 Fair Health Care Pty Ltd - ABN: 55 622 966 380</p>
                 </div>
             </div>
-
         </div>
     </footer>
 
     <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 1000,
-            once: true,
-            easing: 'ease-in-out'
-        });
-
-        // Initialize Icons
+        AOS.init({ duration: 1000, once: true, easing: 'ease-in-out' });
         lucide.createIcons();
 
-        // Magnetic Effect for Buttons
         document.querySelectorAll('.btn-creative').forEach(btn => {
             btn.addEventListener('mousemove', (e) => {
                 const rect = btn.getBoundingClientRect();
@@ -943,19 +1009,16 @@
             });
         });
 
-        // Hero Dropdown Functionality
         const heroDropdownBtn = document.getElementById('hero-dropdown-btn');
         const heroDropdownMenu = document.getElementById('hero-dropdown-menu');
         const heroOptions = document.querySelectorAll('.hero-option');
         const heroSelectedText = document.getElementById('hero-selected-text');
 
-        // Toggle dropdown on click
         heroDropdownBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             heroDropdownMenu.classList.toggle('hidden');
         });
 
-        // Handle option selection
         heroOptions.forEach(option => {
             option.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -964,7 +1027,6 @@
             });
         });
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!heroDropdownBtn.contains(e.target) && !heroDropdownMenu.contains(e.target)) {
                 heroDropdownMenu.classList.add('hidden');
@@ -974,35 +1036,60 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // --- GSAP Hero Animation ---
-            if (typeof gsap !== 'undefined') {
-                gsap.set("#hero-section", { scale: 1.1 });
-                gsap.to("#hero-section", {
-                    scale: 1,
-                    duration: 1.5,
-                    ease: "power3.out"
-                }, ">");
-            }
+            // Register ScrollTrigger
+            gsap.registerPlugin(ScrollTrigger);
 
-            // --- Intersection Observer for Scroll Animations ---
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
+            // --- GSAP Master Timeline for Loader & Hero ---
+            const mainTimeline = gsap.timeline();
 
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.animationPlayState = 'running';
-                        observer.unobserve(entry.target);
+            // 1. Prevent scrolling while loader is active
+            document.body.style.overflow = 'hidden';
+
+            // 2. Animate the logo text inside the loader
+            mainTimeline.fromTo("#loader-logo",
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
+            )
+                // 3. Slide the entire loader screen UP and out of the way
+                .to("#page-loader", {
+                    yPercent: -100,
+                    duration: 1.2,
+                    ease: "power4.inOut",
+                    onComplete: () => {
+                        document.body.style.overflow = ''; // Restore scrolling
+                        document.getElementById('page-loader').style.display = 'none'; // Remove loader from flow
                     }
-                });
-            }, observerOptions);
+                }, "+=0.6") // Hold the logo on screen for 0.6 seconds before exiting
 
-            document.querySelectorAll('.animate-fade-in-up').forEach(el => {
-                el.style.animationPlayState = 'paused';
-                observer.observe(el);
+                // 4. Trigger the Hero Animation exactly as the loader exits
+                .fromTo("#hero-section",
+                    { opacity: 0, scale: 1.1 },
+                    { opacity: 1, scale: 1, duration: 1.5, ease: "power3.out" },
+                    "-=0.6" // Start Hero animation slightly before loader finishes sliding up
+                );
+
+            // --- GSAP Scroll Stagger Animation ---
+            const sections = gsap.utils.toArray('.gsap-section');
+
+            sections.forEach(section => {
+                const children = section.querySelectorAll('.gsap-child');
+                gsap.set(children, { autoAlpha: 0, y: 40 });
+
+                ScrollTrigger.create({
+                    trigger: section,
+                    start: "top 85%",
+                    onEnter: () => {
+                        gsap.to(children, {
+                            autoAlpha: 1,
+                            y: 0,
+                            duration: 0.8,
+                            stagger: 0.15,
+                            ease: "power3.out",
+                            overwrite: "auto"
+                        });
+                    },
+                    once: true
+                });
             });
 
             // --- Sticky Navbar & Parallax Scrolling ---
@@ -1023,17 +1110,14 @@
             function handleScroll() {
                 const scrollY = window.scrollY;
 
-                // 1. Navbar Sticky Logic
                 if (scrollY > 50) {
                     header.classList.add('is-scrolled');
                 } else {
                     header.classList.remove('is-scrolled');
                 }
 
-                // 2. Parallax Elements Logic
                 parallaxElements.forEach(el => {
                     const speed = parseFloat(el.getAttribute('data-speed')) || 0;
-                    // Move the element along the Y-axis based on scroll position and speed
                     el.style.transform = `translateY(${scrollY * speed}px)`;
                 });
             }
