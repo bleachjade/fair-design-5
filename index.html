@@ -10,24 +10,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- TrustBox script -->
+    <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+    <!-- End TrustBox script -->
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Poppins', 'sans-serif'], },
                     colors: {
                         brand: {
                             blue: '#50A7DA',
@@ -37,7 +36,8 @@
                             light: '#EAF3FA',
                             text: '#4A5568',
                             green: '#3CC29A',
-                            red: '#FF806F'
+                            red: '#FF806F',
+                            cyan: '#42ACE1'
                         }
                     },
                     boxShadow: {
@@ -49,6 +49,7 @@
                         'float-slow': 'float 8s ease-in-out infinite',
                         'float-medium': 'float 6s ease-in-out infinite',
                         'float-fast': 'float 4s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
                     },
                     keyframes: {
                         marquee: {
@@ -59,6 +60,10 @@
                             '0%': { transform: 'translateY(0px)' },
                             '50%': { transform: 'translateY(-20px)' },
                             '100%': { transform: 'translateY(0px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
                         }
                     }
                 }
@@ -67,7 +72,25 @@
     </script>
 
     <style>
-        /* Custom Magnetic Button */
+        body {
+            scroll-behavior: smooth;
+            font-family: 'Poppins';
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
         .btn-creative {
             position: relative;
             transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
@@ -92,28 +115,13 @@
             height: 300px;
         }
 
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-15px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
-        }
-
-        /* Review Card Styling */
         .review-card {
             flex: 0 0 auto;
             width: 280px;
             background: white;
             padding: 1.5rem;
             border-radius: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             margin-right: 1.5rem;
             border: 1px solid #e2e8f0;
         }
@@ -129,10 +137,14 @@
             animation: float 6s ease-in-out infinite;
         }
 
-        /* Permanent White Navbar Styles */
         #main-header {
             background-color: #ffffff;
             box-shadow: none;
+        }
+
+        #main-header.is-scrolled {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+            background-color: rgba(255, 255, 255, 0.98);
         }
 
         .nav-link {
@@ -145,26 +157,6 @@
             color: white;
         }
 
-        .nav-text {
-            color: #202246;
-            transition: color 0.3s ease;
-        }
-
-        #main-header a.logo {
-            transition: .5s ease all;
-        }
-
-        /* Scrolled Navbar Override */
-        #main-header.is-scrolled {
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-            background-color: rgba(255, 255, 255, 0.98);
-        }
-
-        #main-header.is-scrolled a.logo {
-            width: 16rem;
-        }
-
-        /* Custom Hero Dropdown Transition */
         #hero-dropdown-menu {
             transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
@@ -189,7 +181,6 @@
             }
         }
 
-        /* Static SVG Shape Dividers */
         .shape-divider {
             position: absolute;
             bottom: -1px;
@@ -212,7 +203,6 @@
             }
         }
 
-        /* Hide Scrollbar for carousels */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -222,17 +212,10 @@
             scrollbar-width: none;
         }
 
-        /* Parallax Optimization */
-        .will-change-transform {
-            will-change: transform;
-        }
-
-        /* GSAP Initial Visibility Blocker */
         .gsap-child {
             visibility: hidden;
         }
 
-        /* --- PRELOADER STYLES --- */
         #page-loader {
             position: fixed;
             top: 0;
@@ -246,6 +229,18 @@
             align-items: center;
             will-change: transform;
         }
+
+        details>summary {
+            list-style: none;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .shape-none .shape-divider {
+            display: none;
+        }
     </style>
 </head>
 
@@ -254,7 +249,7 @@
     <div id="page-loader">
         <div id="loader-logo" class="font-display text-4xl md:text-6xl font-extrabold tracking-tighter opacity-0">
             <img class="h-12 md:h-16 w-full object-contain" src="./images/Fair.com.au-Logo.png" alt="loader logo"
-                onerror="this.src='https://via.placeholder.com/200x60?text=Fair.com.au'">
+                onerror="this.src='https://placehold.co/200x60?text=Fair.com.au'">
         </div>
     </div>
 
@@ -264,7 +259,7 @@
                 class="inner-header max-w-7xl mx-auto flex justify-between items-center bg-white rounded-full px-5 py-3 md:px-8 md:py-5 shadow-sm">
                 <div class="flex items-center gap-1 z-50">
                     <img class="h-8 md:h-10 w-full object-contain relative z-50" src="./images/fair-v10.gif"
-                        alt="logo gif" onerror="this.src='https://via.placeholder.com/150x40?text=Fair.com.au'">
+                        alt="logo gif" onerror="this.src='https://placehold.co/150x40?text=Fair.com.au'">
                 </div>
 
                 <div class="hidden md:flex items-center gap-2">
@@ -281,7 +276,7 @@
                                     <h4 class="font-display font-bold text-[#202246] mb-4 text-lg">Cover by lifestage
                                     </h4>
                                     <ul class="space-y-3">
-                                        <li><a href="#"
+                                        <li><a href="#singles"
                                                 class="text-slate-500 hover:text-[#50A7DA] transition-colors block">Singles</a>
                                         </li>
                                         <li><a href="#"
@@ -364,7 +359,8 @@
                             <div>
                                 <h4 class="font-display font-bold text-[#202246] mb-3 text-base">Cover by lifestage</h4>
                                 <ul class="space-y-3">
-                                    <li><a href="#" class="text-slate-500 hover:text-[#50A7DA] block">Singles</a></li>
+                                    <li><a href="#singles" class="text-slate-500 hover:text-[#50A7DA] block">Singles</a>
+                                    </li>
                                     <li><a href="#" class="text-slate-500 hover:text-[#50A7DA] block">Couples</a></li>
                                     <li><a href="#" class="text-slate-500 hover:text-[#50A7DA] block">Young Adults</a>
                                     </li>
@@ -405,506 +401,719 @@
         </nav>
     </header>
 
-    <div id="hero-section"
-        class="overflow-hidden md:overflow-visible relative bg-brand-blue pt-36 md:pt-52 pb-24 md:pb-48 z-40 transform-gpu overflow-visible">
+    <main id="view-home" class="view-section">
+
         <div
-            class="max-w-7xl container mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-20">
+            class="overflow-hidden md:overflow-visible relative bg-brand-blue pt-36 md:pt-52 pb-24 md:pb-48 z-40 transform-gpu overflow-visible">
+            <div
+                class="max-w-7xl container mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-20">
 
-            <div class="parallax will-change-transform gsap-section hero-text-content relative z-[60]"
-                data-speed="-0.05">
-                <div class="text-center lg:text-left">
-                    <h1
-                        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-brand-navy mb-4 md:mb-6 leading-tight gsap-child lg:whitespace-nowrap">
-                        It’s <i>about time</i> your <br class="hidden md:block" />
-                        bills were Fair
-                    </h1>
-                    <p
-                        class="text-base md:text-lg text-brand-navy max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed gsap-child">
-                        When it comes to comparing health insurance, we're kind of
-                        a big deal! Backed by real reviews. Trusted across Australia.Lorem ipsum dolor sit amet,
-                        consectetur adipiscing elit.
-                    </p>
+                <div class="parallax will-change-transform gsap-section hero-text-content relative z-[60] order-2 md:order-1"
+                    data-speed="-0.05">
+                    <div class="text-center lg:text-left">
+                        <h1
+                            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-brand-navy mb-4 md:mb-6 leading-tight gsap-child lg:whitespace-nowrap">
+                            <!-- It’s <i>about time</i> your <br class="hidden md:block" />
+                            bills were Fair -->
+                            <!-- Life's better when <br class="hidden md:block" />things are Fair -->
+                            Life’s better <br class="hidden md:block" />when things are Fair
+                        </h1>
 
-                    <div class="flex flex-col sm:flex-row gap-3 relative gsap-child justify-center lg:justify-start">
-                        <div class="relative w-full sm:w-[260px] z-[100]">
-                            <button id="hero-dropdown-btn"
-                                class="w-full bg-white rounded-full px-4 md:px-6 py-3 md:py-2 border-none flex items-center justify-between outline-none cursor-pointer group shadow-sm md:shadow-none relative z-20">
-                                <span id="hero-selected-text"
-                                    class="text-[#202151] text-lg sm:text-[20px] font-regular truncate mr-2">I'm looking
-                                    for</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                    fill="#202246" class="flex-shrink-0">
-                                    <path d="M7 10l5 5 5-5z" />
-                                </svg>
-                            </button>
+                        <div
+                            class="flex flex-col sm:flex-row gap-3 relative gsap-child justify-center lg:justify-start">
+                            <div class="relative w-full sm:w-[260px] z-[100]">
+                                <button id="hero-dropdown-btn"
+                                    class="w-full bg-white rounded-full px-4 md:px-6 py-3 md:py-2 border-none flex items-center justify-between outline-none cursor-pointer group shadow-sm md:shadow-none relative z-20">
+                                    <span id="hero-selected-text"
+                                        class="text-[#202151] text-lg md:text-xl font-regular truncate mr-2">I'm
+                                        looking
+                                        for</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="#202246" class="flex-shrink-0">
+                                        <path d="M7 10l5 5 5-5z" />
+                                    </svg>
+                                </button>
 
-                            <div id="hero-dropdown-menu"
-                                class="hidden absolute top-full left-0 w-full mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[999] p-2 text-left">
-                                <div class="space-y-1">
-                                    <button
-                                        class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3 text-sm md:text-base">
-                                        <i data-lucide="shield-check" class="w-4 h-4 text-slate-400"></i>
-                                        Private Health Cover
-                                    </button>
-                                    <button
-                                        class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3 text-sm md:text-base">
-                                        <i data-lucide="heart-handshake" class="w-4 h-4 text-slate-400"></i>
-                                        NDIS Care Management
-                                    </button>
-                                    <button
-                                        class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3 text-sm md:text-base">
-                                        <i data-lucide="armchair" class="w-4 h-4 text-slate-400"></i>
-                                        Aged Care Support
-                                    </button>
-                                    <button
-                                        class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3 text-sm md:text-base">
-                                        <i data-lucide="zap" class="w-4 h-4 text-slate-400"></i>
-                                        Energy & Utilities
-                                    </button>
+                                <div id="hero-dropdown-menu"
+                                    class="hidden absolute top-full left-0 w-full mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[999] p-2 text-left">
+                                    <div class="space-y-1">
+                                        <button
+                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3 text-sm md:text-base">
+                                            <i data-lucide="shield-check" class="w-4 h-4 text-slate-400"></i>
+                                            Private Health Cover
+                                        </button>
+                                        <button
+                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3 text-sm md:text-base">
+                                            <i data-lucide="heart-handshake" class="w-4 h-4 text-slate-400"></i>
+                                            NDIS Care Management
+                                        </button>
+                                        <button
+                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3 text-sm md:text-base">
+                                            <i data-lucide="armchair" class="w-4 h-4 text-slate-400"></i>
+                                            Aged Care Support
+                                        </button>
+                                        <button
+                                            class="hero-option w-full text-left px-4 py-3 rounded-xl hover:bg-blue-50 hover:text-[#50A7DA] font-medium transition-colors flex items-center gap-3 text-sm md:text-base">
+                                            <i data-lucide="zap" class="w-4 h-4 text-slate-400"></i>
+                                            Energy & Utilities
+                                        </button>
+                                    </div>
                                 </div>
+                            </div>
+
+                            <div class="button-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="parallax will-change-transform hero-svg-image mt-8 lg:mt-0 relative z-10 order-1 md:order-2"
+                    data-speed="-0.15">
+                    <div
+                        class="absolute inset-0 -bottom-10 -right-10 bg-gradient-to-tr from-brand-blue/70 to-brand-light/70 rounded-full blur-3xl scale-90 -z-10">
+                    </div>
+                    <div class="relative animate-float md:block">
+                        <img src="./images/Fair.com.au - hero illo - 2026.webp" alt="Fair Health Care Alliance Family"
+                            class="w-[80%] md:w-full max-w-[400px] md:max-w-none h-auto mx-auto drop-shadow-xl origin-right"
+                            onerror="this.src='https://placehold.co/600x400?text=Hero+Image'">
+                    </div>
+                </div>
+            </div>
+            <div class="shape-divider z-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none">
+                    <path
+                        d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
+                        fill="#202246"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="overflow-hidden md:overflow-visible bg-brand-navy pt-6 pb-12 md:pb-16 relative z-10 -mt-1">
+            <div class="max-w-6xl container mx-auto px-4 md:px-6 gsap-section">
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
+                    <div
+                        class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4 md:gap-6 gsap-child w-full lg:w-auto">
+                        <div class="flex shrink-0">
+                            <img src="./images/FHCA - Awards badge - group - 2026.webp" alt="Award"
+                                class="h-28 md:h-24 object-contain"
+                                onerror="this.src='https://placehold.co/64?text=Award'">
+                        </div>
+                        <div class="text-white text-sm max-w-sm font-light px-4 sm:px-0">
+                            When it comes to comparing health insurance, we're kind of a big deal! Backed by real
+                            reviews.
+                            Trusted across Australia.
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-6 md:gap-8 gsap-child w-full lg:w-auto pt-6 border-t border-slate-700/50 lg:border-t-0 lg:pt-0">
+                        <div
+                            class="h-full bg-white min-h-16 md:min-h-24 flex justify-center items-center rounded shadow-md">
+                            <!-- TrustBox widget - Micro Review Count -->
+                            <div class="trustpilot-widget" data-locale="en-US"
+                                data-template-id="5419b6a8b0d04a076446a9ad"
+                                data-businessunit-id="6909402cc7aae452ccbb5b54" data-style-height="40"
+                                data-style-width="100%" data-token="cf50a3cf-7c50-48a9-bd43-a54f1d4838d5"
+                                data-min-review-count="0" data-style-alignment="center">
+                                <a href="https://www.trustpilot.com/review/fairhealthcare.com.au" target="_blank"
+                                    rel="noopener">Trustpilot</a>
+                            </div>
+                            <!-- End TrustBox widget -->
+                        </div>
+
+                        <div class="text-white text-sm max-w-sm lg:max-w-xs font-light px-4 sm:px-0">
+                            <strong>Our mission:</strong> to treat you like family by ensuring our policy recommendation
+                            is
+                            always based on overall value, specific to your unique circumstances.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-6xl container mx-auto px-4 md:px-6 relative mt-10 md:mt-[75px]">
+            <div
+                class="rounded-2xl md:rounded-3xl p-6 md:p-12 border-[3px] md:border-[4px] border-[#E0EEF8] gsap-section">
+                <h2 class="text-xl md:text-2xl font-semibold text-center text-brand-navy mb-8 md:mb-10 gsap-child">
+                    Select a
+                    comparison</h2>
+                <div
+                    class="grid grid-cols-2 md:grid-cols-5 justify-start md:justify-between items-end overflow-x-auto pb-6 gap-6 md:gap-6 no-scrollbar snap-x snap-mandatory">
+                    <div
+                        class="snap-center flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] md:min-w-[120px] gsap-child shrink-0">
+                        <div
+                            class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center transition-transform group-hover:scale-105">
+                            <img src="./images/Group (2).png" alt="Insurance" class="w-full h-full object-contain"
+                                onerror="this.src='https://placehold.co/96?text=Insure'">
+                        </div>
+                        <span
+                            class="bg-brand-blue text-[#202246] text-xs md:text-sm font-semibold px-4 md:px-6 py-1.5 md:py-2 rounded-full whitespace-nowrap">Insurance</span>
+                    </div>
+
+                    <div
+                        class="snap-center flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] md:min-w-[120px] gsap-child shrink-0">
+                        <div
+                            class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center transition-transform group-hover:scale-105">
+                            <img src="./images/FHC - ILLOS - People - Guy 1 - primary.png" alt="Utilities"
+                                class="w-full h-full object-contain"
+                                onerror="this.src='https://placehold.co/96?text=Util'">
+                        </div>
+                        <span
+                            class="bg-brand-green text-[#202246] text-xs md:text-sm font-semibold px-4 md:px-6 py-1.5 md:py-2 rounded-full whitespace-nowrap">Utilities</span>
+                    </div>
+
+                    <div
+                        class="snap-center flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] md:min-w-[120px] gsap-child shrink-0">
+                        <div
+                            class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center transition-transform group-hover:scale-105">
+                            <img src="./images/FHC - ILLOS - People - Couple 2 - primary.png" alt="Internet"
+                                class="w-full h-full object-contain"
+                                onerror="this.src='https://placehold.co/96?text=Net'">
+                        </div>
+                        <span
+                            class="bg-brand-orange text-[#202246] text-xs md:text-sm font-semibold px-4 md:px-6 py-1.5 md:py-2 rounded-full whitespace-nowrap">Internet</span>
+                    </div>
+
+                    <div
+                        class="snap-center flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] md:min-w-[120px] gsap-child shrink-0">
+                        <div
+                            class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center transition-transform group-hover:scale-105">
+                            <img src="./images/FHC - ILLOS - People - Family 2 - primary.png" alt="Home loans"
+                                class="w-full h-full object-contain"
+                                onerror="this.src='https://placehold.co/96?text=Loans'">
+                        </div>
+                        <span
+                            class="bg-yellow-400 text-[#202246] text-xs md:text-sm font-semibold px-4 md:px-6 py-1.5 md:py-2 rounded-full whitespace-nowrap">Home
+                            loans</span>
+                    </div>
+
+                    <div
+                        class="snap-center flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] md:min-w-[120px] gsap-child shrink-0">
+                        <div
+                            class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center transition-transform group-hover:scale-105">
+                            <img src="./images/FHC - ILLOS - People - Mother 1 - primary.png" alt="About"
+                                class="w-full h-full object-contain"
+                                onerror="this.src='https://placehold.co/96?text=About'">
+                        </div>
+                        <span
+                            class="bg-red-400 text-[#202246] text-xs md:text-sm font-semibold px-4 md:px-6 py-1.5 md:py-2 rounded-full whitespace-nowrap">About</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="overflow-hidden md:overflow-visible py-16 md:py-20 relative z-10 gsap-section">
+            <div class="container mx-auto px-4 md:px-6 text-center relative">
+                <h2 class="text-2xl md:text-3xl font-semibold text-brand-navy mb-8 md:mb-12 gsap-child">
+                    Brands we compare
+                </h2>
+
+                <div class="relative max-w-5xl mx-auto">
+
+                    <button onclick="scrollCarousel(-1)"
+                        class="md:hidden absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 text-slate-400 hover:text-brand-navy transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                            stroke="currentColor" class="w-6 h-6 sm:w-8 sm:h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                    </button>
+                    <button onclick="scrollCarousel(1)"
+                        class="md:hidden absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 text-brand-navy hover:text-slate-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                            stroke="currentColor" class="w-6 h-6 sm:w-8 sm:h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </button>
+
+                    <div id="brand-carousel" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar
+                        md:grid md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/AGL-Logo 1.png" alt="AGL"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/ahm-logo-png-1-1 1.png" alt="ahm"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/au-seniors 1.png" alt="Australian Seniors"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/Australian_Unity_Logo 1.png" alt="Australian Unity"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/Dodo-logo-white-OL.png 1.png" alt="Dodo"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/energy-powershop-australia.jpg 1.png" alt="Powershop"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/HCF_2013 1.png" alt="HCF"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/nib_RGB_PrimaryLogo_TrueGreen 1.png" alt="nib"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/ORG.AX_BIG 1.png" alt="Origin"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/site-logo 1.png" alt="Provider"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/hif 1.png" alt="HIF"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                        <div class="bg-white rounded-[16px] p-6 md:p-4 flex items-center justify-center h-24 md:h-28 shadow-sm gsap-child 
+                            min-w-full shrink-0 snap-center md:min-w-0 md:w-full">
+                            <img src="./images/logos/gmhba 1.png" alt="GMHBA"
+                                class="w-3/4 md:w-full h-full object-contain mx-auto"
+                                onerror="this.src='https://placehold.co/100x40?text=Brand'">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            /* Utility to hide scrollbar while keeping native swipe functionality */
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+
+            .no-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        </style>
+
+        <script>
+            function scrollCarousel(direction) {
+                const carousel = document.getElementById('brand-carousel');
+                const scrollAmount = carousel.offsetWidth;
+                carousel.scrollBy({
+                    left: direction * scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        </script>
+
+        <div class="overflow-hidden md:overflow-visible relative py-20 md:py-32 mt-10 overflow-hidden bg-[#E0EEF8]">
+            <div class="shape-divider" style="top: -1px; bottom: auto;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none"
+                    style="background: #F6FBFF;">
+                    <path
+                        d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
+                        fill="#E0EEF8"></path>
+                </svg>
+            </div>
+
+            <div class="container mx-auto px-4 md:px-6 py-8 text-center relative z-10 gsap-section">
+                <h2 class="text-2xl md:text-3xl font-semibold text-brand-navy mb-12 md:mb-16 gsap-child">
+                    Why should you <span class="text-brand-blue italic">get a Fair go</span> with us?
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 max-w-5xl mx-auto">
+                    <div class="flex flex-col items-center text-center gsap-child">
+                        <div class="w-24 h-24 md:w-32 md:h-32 mb-4 md:mb-6 relative flex items-center justify-center">
+                            <img src="./images/FHC - ILLOS - People - Couple 2 - primary.png" alt="You can trust us"
+                                class="w-full h-full object-contain"
+                                onerror="this.src='https://placehold.co/128?text=Trust'">
+                        </div>
+                        <h3 class="text-lg md:text-xl font-semibold text-[#202246] mb-2 md:mb-3">You can trust us</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed px-4 md:px-0">We've won comparison website of
+                            the
+                            year the last 3 years running.</p>
+                    </div>
+
+                    <div class="flex flex-col items-center text-center gsap-child">
+                        <div class="w-24 h-24 md:w-32 md:h-32 mb-4 md:mb-6 relative flex items-center justify-center">
+                            <img src="./images/FHC - ILLOS - People - Guy 1 - primary.png" alt="We'll save you money"
+                                class="w-full h-full object-contain"
+                                onerror="this.src='https://placehold.co/128?text=Save'">
+                        </div>
+                        <h3 class="text-lg md:text-xl font-semibold text-[#202246] mb-2 md:mb-3">We'll save you money
+                        </h3>
+                        <p class="text-sm text-gray-600 leading-relaxed px-4 md:px-0">We regularly save customers over
+                            hundreds of dollars a year by switching providers.</p>
+                    </div>
+
+                    <div class="flex flex-col items-center text-center gsap-child">
+                        <div class="w-24 h-24 md:w-32 md:h-32 mb-4 md:mb-6 relative flex items-center justify-center">
+                            <img src="./images/FHC - ILLOS - Comms - Comparison 1 - primary.png"
+                                alt="It's completely free!" class="w-full h-full object-contain"
+                                onerror="this.src='https://placehold.co/128?text=Free'">
+                        </div>
+                        <h3 class="text-lg md:text-xl font-semibold text-[#202246] mb-2 md:mb-3">It's completely free!
+                        </h3>
+                        <p class="text-sm text-gray-600 leading-relaxed px-4 md:px-0">We don't cost a cent! Our
+                            providers
+                            pay us for the service.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shape-divider">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none"
+                    style="background: #E0EEF8;">
+                    <path
+                        d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
+                        fill="#F6FBFF"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="reviews-container"></div>
+    </main>
+
+    <main id="view-singles" class="view-section hidden">
+
+        <div id="singles-hero" class="relative bg-brand-light pt-36 md:pt-48 pb-20 md:pb-32 z-10 overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full">
+                <img src="./images/iStock-939180730 1 (1).png" alt="Happy Single Person"
+                    class="w-full h-full object-cover"
+                    onerror="this.src='https://placehold.co/600x400?text=Singles+Hero'">
+            </div>
+            <div
+                class="max-w-7xl container mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center relative z-20">
+                <div class="gsap-section hero-text-content relative z-[60]">
+                    <div class="text-center lg:text-left">
+                        <h1
+                            class="text-4xl md:text-5xl lg:text-6xl font-bold text-brand-navy mb-6 leading-tight gsap-child">
+                            You deserve a health fund that pays more
+                        </h1>
+                        <p
+                            class="text-lg md:text-xl text-brand-navy max-w-lg mx-auto lg:mx-0 mb-8 leading-relaxed gsap-child">
+                            Lorem ipsum dolor sit
+                            amet, consecte tuernibh
+                            euismod tincidun
+                        </p>
+                        <div class="flex justify-center lg:justify-start gsap-child">
+                            <div class="button-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="shape-divider z-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none">
+                    <path
+                        d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
+                        fill="#202246"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="overflow-hidden md:overflow-visible bg-brand-navy pt-6 pb-12 md:pb-16 relative z-10 -mt-1">
+            <div class="max-w-6xl container mx-auto px-4 md:px-6 gsap-section">
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
+                    <div
+                        class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4 md:gap-6 gsap-child w-full lg:w-auto">
+                        <div class="flex shrink-0">
+                            <img src="./images/FHCA - Awards badge - group - 2026.webp" alt="Award"
+                                class="h-16 md:h-24 object-contain"
+                                onerror="this.src='https://placehold.co/64?text=Award'">
+                        </div>
+                        <div class="text-white text-sm max-w-sm font-light px-4 sm:px-0">
+                            When it comes to comparing health insurance, we're kind of a big deal! Backed by real
+                            reviews.
+                            Trusted across Australia.
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-6 md:gap-8 gsap-child w-full lg:w-auto pt-6 border-t border-slate-700/50 lg:border-t-0 lg:pt-0">
+                        <div
+                            class="bg-white rounded-lg p-4 md:p-3 flex flex-col items-center min-w-[160px] md:min-w-[140px] shadow-sm">
+                            <span
+                                class="text-sm md:text-xs font-bold text-gray-800 uppercase tracking-wider mb-1">Excellent</span>
+                            <div class="flex text-brand-orange text-base md:text-sm mb-1">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-xs md:text-[10px] text-gray-500">Based on <strong>1,262</strong>
+                                reviews</span>
+                            <div class="flex items-center gap-1 mt-1 text-green-600">
+                                <i class="fas fa-check-circle text-xs md:text-[10px]"></i>
+                                <span class="text-xs md:text-[10px] font-bold">TrustIndex</span>
                             </div>
                         </div>
 
-                        <button
-                            class="w-full sm:w-auto bg-brand-orange text-white px-8 py-3 md:py-2 rounded-full font-bold text-lg sm:text-[20px] uppercase transition-all hover:bg-brand-orange/90 shadow-sm md:shadow-none relative z-10">
-                            COMPARE NOW
+                        <div class="text-white text-sm max-w-sm lg:max-w-xs font-light px-4 sm:px-0">
+                            <strong>Our mission:</strong> to treat you like family by ensuring our policy recommendation
+                            is
+                            always based on overall value, specific to your unique circumstances.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="py-20 bg-white gsap-section">
+            <div class="max-w-7xl mx-auto px-4 md:px-6 gap-[150px] items-center flex">
+                <div class="gsap-child flex-1 w-full flex flex-col gap-8">
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-navy">Why compare <span
+                            class="text-brand-cyan">with us?</span></h2>
+                    <p class="text-xl text-[#202253]">Couples cover is just one policy for two people. It’s handy when
+                        your needs are similar, but two
+                        singles policies could be more appropriate when they’re not.</p>
+                    <p class="text-xl text-[#202253] font-semibold">You deserve a health fund that pays more</p>
+                    <div class="button-container"></div>
+                </div>
+                <div class="gsap-child relative w-1/3 flex justify-end">
+                    <img class="h-[285px] object-contain" src="./images/FHC - ILLOS - People - Guy 1 - primary.png"
+                        alt="">
+                </div>
+            </div>
+        </section>
+        <div class="overflow-hidden md:overflow-visible relative py-20">
+            <div class="shape-divider" style="top: -1px; bottom: auto;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none"
+                    style="background: #fff;">
+                    <path
+                        d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
+                        fill="#E0EEF8"></path>
+                </svg>
+            </div>
+            <div class="py-16 bg-[#E0EEF8] gsap-section">
+                <div class="container mx-auto px-4 md:px-6 text-center">
+                    <h2 class="text-2xl md:text-4xl font-bold text-brand-navy mb-12 gsap-child">Brands we compare</h2>
+
+                    <div class="relative max-w-6xl mx-auto group gsap-child text-center flex justify-center">
+                        <button id="brand-prev"
+                            class="absolute -left-4 md:-left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-md items-center justify-center text-brand-navy hover:text-brand-cyan hover:shadow-lg transition-all focus:outline-none hidden sm:flex">
+                            <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                        </button>
+
+                        <div id="brand-track"
+                            class="max-w-5xl mx-auto flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar py-4 px-4 -mx-4 relative z-10">
+
+                            <div
+                                class="shrink-0 snap-center w-[150px] md:w-[180px] bg-white rounded-2xl p-4 flex items-center justify-center h-24 shadow-sm hover:shadow-md transition-shadow">
+                                <img src="./images/ahm-logo-png-1-1-1-68.png" alt="ahm"
+                                    class="w-full h-full object-contain"
+                                    onerror="this.src='https://placehold.co/100x40?text=ahm'">
+                            </div>
+                            <div
+                                class="shrink-0 snap-center w-[150px] md:w-[180px] bg-white rounded-2xl p-4 flex items-center justify-center h-24 shadow-sm hover:shadow-md transition-shadow">
+                                <img src="./images/hif-1-69.png" alt="HIF" class="w-full h-full object-contain"
+                                    onerror="this.src='https://placehold.co/100x40?text=HIF'">
+                            </div>
+                            <div
+                                class="shrink-0 snap-center w-[150px] md:w-[180px] bg-white rounded-2xl p-4 flex items-center justify-center h-24 shadow-sm hover:shadow-md transition-shadow">
+                                <img src="./images/hcf_2013-1-70.png" alt="HCF" class="w-full h-full object-contain"
+                                    onerror="this.src='https://placehold.co/100x40?text=HCF'">
+                            </div>
+                            <div
+                                class="shrink-0 snap-center w-[150px] md:w-[180px] bg-white rounded-2xl p-4 flex items-center justify-center h-24 shadow-sm hover:shadow-md transition-shadow">
+                                <img src="./images/gmhba-1-71.png" alt="GMHBA" class="w-full h-full object-contain"
+                                    onerror="this.src='https://placehold.co/100x40?text=GMHBA'">
+                            </div>
+                            <div
+                                class="shrink-0 snap-center w-[150px] md:w-[180px] bg-white rounded-2xl p-4 flex items-center justify-center h-24 shadow-sm hover:shadow-md transition-shadow">
+                                <img src="./images/node-72.png" alt="nib" class="w-full h-full object-contain"
+                                    onerror="this.src='https://placehold.co/100x40?text=nib'">
+                            </div>
+                            <div
+                                class="shrink-0 snap-center w-[150px] md:w-[180px] bg-white rounded-2xl p-4 flex items-center justify-center h-24 shadow-sm hover:shadow-md transition-shadow">
+                                <img src="./images/node-73.png" alt="Australian Unity"
+                                    class="w-full h-full object-contain"
+                                    onerror="this.src='https://placehold.co/100x40?text=Unity'">
+                            </div>
+
+                            <div
+                                class="shrink-0 snap-center w-[150px] md:w-[180px] bg-white rounded-2xl p-4 flex items-center justify-center h-24 shadow-sm hover:shadow-md transition-shadow">
+                                <img src="./images/ahm-logo-png-1-1-1-68.png" alt="ahm"
+                                    class="w-full h-full object-contain"
+                                    onerror="this.src='https://placehold.co/100x40?text=ahm'">
+                            </div>
+                            <div
+                                class="shrink-0 snap-center w-[150px] md:w-[180px] bg-white rounded-2xl p-4 flex items-center justify-center h-24 shadow-sm hover:shadow-md transition-shadow">
+                                <img src="./images/hif-1-69.png" alt="HIF" class="w-full h-full object-contain"
+                                    onerror="this.src='https://placehold.co/100x40?text=HIF'">
+                            </div>
+                        </div>
+
+                        <button id="brand-next"
+                            class="absolute -right-4 md:-right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-md items-center justify-center text-brand-navy hover:text-brand-cyan hover:shadow-lg transition-all focus:outline-none hidden sm:flex">
+                            <i data-lucide="chevron-right" class="w-6 h-6"></i>
                         </button>
                     </div>
                 </div>
             </div>
-
-            <div class="parallax will-change-transform hero-svg-image mt-8 lg:mt-0 relative z-10" data-speed="-0.15">
-                <div
-                    class="absolute inset-0 -bottom-10 -right-10 bg-gradient-to-tr from-brand-blue/70 to-brand-light/70 rounded-full blur-3xl scale-90 -z-10">
-                </div>
-                <div class="relative animate-float md:block">
-                    <img src="./images/Fair.com.au - hero illo - 2026.webp" alt="Fair Health Care Alliance Family"
-                        class="w-[80%] md:w-full max-w-[400px] md:max-w-none h-auto mx-auto drop-shadow-xl origin-right"
-                        onerror="this.src='https://via.placeholder.com/600x400?text=Hero+Image'">
-                </div>
+            <div class="shape-divider">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none"
+                    style="background: #E0EEF8;">
+                    <path
+                        d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
+                        fill="#fff"></path>
+                </svg>
             </div>
         </div>
-        <div class="shape-divider z-0">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none">
-                <path
-                    d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
-                    fill="#202246"></path>
-            </svg>
-        </div>
-    </div>
 
-    <div class="overflow-hidden md:overflow-visible bg-brand-navy pt-6 pb-12 md:pb-16 relative z-10 -mt-1">
-        <div class="max-w-6xl container mx-auto px-4 md:px-6 gsap-section">
-            <div class="flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
-                <div
-                    class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4 md:gap-6 gsap-child w-full lg:w-auto">
-                    <div class="flex shrink-0">
-                        <img src="./images/award-winner.png" alt="Award" class="h-16 md:h-20 object-contain"
-                            onerror="this.src='https://via.placeholder.com/64?text=Award'">
-                    </div>
-                    <div class="text-white text-sm max-w-sm font-light px-4 sm:px-0">
-                        When it comes to comparing health insurance, we're kind of a big deal! Backed by real reviews.
-                        Trusted across Australia.
-                    </div>
+        <div class="reviews-container shape-none bg-white"></div>
+
+        <section class="py-20 bg-white gsap-section">
+            <div class="max-w-7xl mx-auto px-4 md:px-6 flex gap-[150px] items-center">
+                <div class="gsap-child w-1/3">
+                    <img class="object-contain w-full h-[290px]"
+                        src="./images/FHC - ILLOS - People - Guy 1 - primary.png" alt="">
                 </div>
+                <div class="gsap-child bg-brand-light p-8 md:p-12 rounded-3xl relative flex-1">
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-navy mb-8">Why compare <span
+                            class="text-brand-cyan italic">with us?</span></h2>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3 text-brand-navy">
+                            <i data-lucide="square-check-big" class="text-[#54BFA2] w-5 h-5 flex-shrink-0"></i>
+                            <span>Completely free service for you</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-brand-navy">
+                            <i data-lucide="square-check-big" class="text-[#54BFA2] w-5 h-5 flex-shrink-0"></i>
+                            <span>Company and helpful advisers all based in Australia</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-brand-navy">
+                            <i data-lucide="square-check-big" class="text-[#54BFA2] w-5 h-5 flex-shrink-0"></i>
+                            <span>We cater to your changing health needs throughout life – singles, couples, families,
+                                young adults, over 50s and seniors</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-brand-navy">
+                            <i data-lucide="square-check-big" class="text-[#54BFA2] w-5 h-5 flex-shrink-0"></i>
+                            <span>The <strong>only</strong> health fund comparison recommended by the Australian Dental
+                                Association (ADA)</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-brand-navy">
+                            <i data-lucide="square-check-big" class="text-[#54BFA2] w-5 h-5 flex-shrink-0"></i>
+                            <span>Respect. No automatic phone dialers hassling your phone.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-                <div
-                    class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-6 md:gap-8 gsap-child w-full lg:w-auto pt-6 border-t border-slate-700/50 lg:border-t-0 lg:pt-0">
+        <section class="py-20 bg-white gsap-section">
+            <div class="max-w-3xl mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-brand-cyan mb-12 gsap-child">Commonly asked
+                    questions</h2>
+                <div class="space-y-4 gsap-child">
+                    <details
+                        class="group border border-gray-200 rounded-xl bg-gray-50 [&_summary::-webkit-details-marker]:hidden">
+                        <summary
+                            class="flex cursor-pointer items-center justify-between gap-1.5 p-5 font-semibold text-brand-navy text-lg">
+                            Do I need Health Insurance?
+                            <i data-lucide="plus" class="shrink-0 group-open:hidden"></i>
+                            <i data-lucide="minus" class="shrink-0 hidden group-open:block"></i>
+                        </summary>
+                        <div class="p-5 pt-0 text-brand-text leading-relaxed">Lorem ipsum dolor sit amet, consectetuer
+                            adipiscing elit.</div>
+                    </details>
+                    <details
+                        class="group border border-gray-200 rounded-xl bg-gray-50 [&_summary::-webkit-details-marker]:hidden">
+                        <summary
+                            class="flex cursor-pointer items-center justify-between gap-1.5 p-5 font-semibold text-brand-navy text-lg">
+                            Do singles need hospital cover?
+                            <i data-lucide="plus" class="shrink-0 group-open:hidden"></i>
+                            <i data-lucide="minus" class="shrink-0 hidden group-open:block"></i>
+                        </summary>
+                        <div class="p-5 pt-0 text-brand-text leading-relaxed">Lorem ipsum dolor sit amet.</div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 md:py-32 md:pb-[180px] bg-brand-light gsap-section">
+            <div class="max-w-7xl mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-navy mb-12 text-center gsap-child">Health insurance
+                    articles</h2>
+                <div class="grid md:grid-cols-3 gap-8">
                     <div
-                        class="bg-white rounded-lg p-4 md:p-3 flex flex-col items-center min-w-[160px] md:min-w-[140px] shadow-sm">
-                        <span
-                            class="text-sm md:text-xs font-bold text-gray-800 uppercase tracking-wider mb-1">Excellent</span>
-                        <div class="flex text-brand-orange text-base md:text-sm mb-1">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                class="fas fa-star"></i><i class="fas fa-star"></i>
+                        class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow gsap-child cursor-pointer group">
+                        <div class="h-48 bg-gray-200 w-full overflow-hidden">
+                            <img src="./images/article1.jpg" alt="Article"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                                onerror="this.src='https://placehold.co/400x250?text=Article'">
                         </div>
-                        <span class="text-xs md:text-[10px] text-gray-500">Based on <strong>1,262</strong>
-                            reviews</span>
-                        <div class="flex items-center gap-1 mt-1 text-green-600">
-                            <i class="fas fa-check-circle text-xs md:text-[10px]"></i>
-                            <span class="text-xs md:text-[10px] font-bold">TrustIndex</span>
+                        <div class="p-6">
+                            <div class="text-sm font-semibold text-brand-cyan mb-2">Health Cover</div>
+                            <h3 class="text-xl font-bold text-brand-navy mb-3">Top 5 benefits of joining a health fund
+                            </h3>
+                            <p class="text-sm text-gray-500 mb-4">Lorem ipsum dolor sit amet, consectetuer adipiscing
+                                elit, sed diam nonummy...</p>
+                            <p class="text-xs font-bold text-brand-navy uppercase">Author name, 1 February 2026</p>
                         </div>
                     </div>
-
-                    <div class="text-white text-sm max-w-sm lg:max-w-xs font-light px-4 sm:px-0">
-                        <strong>Our mission:</strong> to treat you like family by ensuring our policy recommendation is
-                        always based on overall value, specific to your unique circumstances.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="max-w-6xl container mx-auto px-4 md:px-6 relative mt-10 md:mt-[75px]">
-        <div class="rounded-2xl md:rounded-3xl p-6 md:p-12 border-[3px] md:border-[4px] border-[#E0EEF8] gsap-section">
-            <h2 class="text-xl md:text-2xl font-semibold text-center text-brand-navy mb-8 md:mb-10 gsap-child">Select a
-                comparison</h2>
-            <div
-                class="flex justify-start md:justify-between items-end overflow-x-auto pb-6 gap-6 md:gap-6 no-scrollbar snap-x snap-mandatory">
-                <div
-                    class="snap-center flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] md:min-w-[120px] gsap-child shrink-0">
                     <div
-                        class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center transition-transform group-hover:scale-105">
-                        <img src="./images/Group (2).png" alt="Insurance" class="w-full h-full object-contain"
-                            onerror="this.src='https://via.placeholder.com/96?text=Insure'">
-                    </div>
-                    <span
-                        class="bg-brand-blue text-[#202246] text-xs md:text-sm font-semibold px-4 md:px-6 py-1.5 md:py-2 rounded-full whitespace-nowrap">Insurance</span>
-                </div>
-
-                <div
-                    class="snap-center flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] md:min-w-[120px] gsap-child shrink-0">
-                    <div
-                        class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center transition-transform group-hover:scale-105">
-                        <img src="./images/FHC - ILLOS - People - Guy 1 - primary.png" alt="Utilities"
-                            class="w-full h-full object-contain"
-                            onerror="this.src='https://via.placeholder.com/96?text=Util'">
-                    </div>
-                    <span
-                        class="bg-brand-green text-[#202246] text-xs md:text-sm font-semibold px-4 md:px-6 py-1.5 md:py-2 rounded-full whitespace-nowrap">Utilities</span>
-                </div>
-
-                <div
-                    class="snap-center flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] md:min-w-[120px] gsap-child shrink-0">
-                    <div
-                        class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center transition-transform group-hover:scale-105">
-                        <img src="./images/FHC - ILLOS - People - Couple 2 - primary.png" alt="Internet"
-                            class="w-full h-full object-contain"
-                            onerror="this.src='https://via.placeholder.com/96?text=Net'">
-                    </div>
-                    <span
-                        class="bg-brand-orange text-[#202246] text-xs md:text-sm font-semibold px-4 md:px-6 py-1.5 md:py-2 rounded-full whitespace-nowrap">Internet</span>
-                </div>
-
-                <div
-                    class="snap-center flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] md:min-w-[120px] gsap-child shrink-0">
-                    <div
-                        class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center transition-transform group-hover:scale-105">
-                        <img src="./images/FHC - ILLOS - People - Family 2 - primary.png" alt="Home loans"
-                            class="w-full h-full object-contain"
-                            onerror="this.src='https://via.placeholder.com/96?text=Loans'">
-                    </div>
-                    <span
-                        class="bg-yellow-400 text-[#202246] text-xs md:text-sm font-semibold px-4 md:px-6 py-1.5 md:py-2 rounded-full whitespace-nowrap">Home
-                        loans</span>
-                </div>
-
-                <div
-                    class="snap-center flex flex-col items-center gap-4 group cursor-pointer min-w-[100px] md:min-w-[120px] gsap-child shrink-0">
-                    <div
-                        class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center transition-transform group-hover:scale-105">
-                        <img src="./images/FHC - ILLOS - People - Mother 1 - primary.png" alt="About"
-                            class="w-full h-full object-contain"
-                            onerror="this.src='https://via.placeholder.com/96?text=About'">
-                    </div>
-                    <span
-                        class="bg-red-400 text-[#202246] text-xs md:text-sm font-semibold px-4 md:px-6 py-1.5 md:py-2 rounded-full whitespace-nowrap">About</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="overflow-hidden md:overflow-visible py-16 md:py-20 relative z-10 gsap-section">
-        <div class="container mx-auto px-4 md:px-6 text-center">
-            <h2 class="text-2xl md:text-3xl font-semibold text-brand-navy mb-8 md:mb-12 gsap-child">Brands we compare
-            </h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6 max-w-5xl mx-auto">
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/AGL-Logo 1.png" alt="AGL" class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/ahm-logo-png-1-1 1.png" alt="ahm" class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/au-seniors 1.png" alt="Australian Seniors"
-                        class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/Australian_Unity_Logo 1.png" alt="Australian Unity"
-                        class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/Dodo-logo-white-OL.png 1.png" alt="Dodo"
-                        class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/energy-powershop-australia.jpg 1.png" alt="Powershop"
-                        class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/HCF_2013 1.png" alt="HCF" class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/nib_RGB_PrimaryLogo_TrueGreen 1.png" alt="nib"
-                        class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/ORG.AX_BIG 1.png" alt="Origin" class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/site-logo 1.png" alt="Provider" class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/hif 1.png" alt="HIF" class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-                <div
-                    class="bg-white rounded-[16px] p-4 flex items-center justify-center h-20 md:h-28 shadow-sm gsap-child">
-                    <img src="./images/logos/gmhba 1.png" alt="GMHBA" class="w-full h-full object-contain"
-                        onerror="this.src='https://via.placeholder.com/100x40?text=Brand'">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="overflow-hidden md:overflow-visible relative py-20 md:py-32 mt-10 overflow-hidden bg-[#E0EEF8]">
-        <div class="shape-divider" style="top: -1px; bottom: auto;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none"
-                style="background: #F6FBFF;">
-                <path
-                    d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
-                    fill="#E0EEF8"></path>
-            </svg>
-        </div>
-
-        <div class="container mx-auto px-4 md:px-6 py-8 text-center relative z-10 gsap-section">
-            <h2 class="text-2xl md:text-3xl font-semibold text-brand-navy mb-12 md:mb-16 gsap-child">
-                Why should you <span class="text-brand-blue italic">get a Fair go</span> with us?
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 max-w-5xl mx-auto">
-                <div class="flex flex-col items-center text-center gsap-child">
-                    <div class="w-24 h-24 md:w-32 md:h-32 mb-4 md:mb-6 relative flex items-center justify-center">
-                        <img src="./images/FHC - ILLOS - People - Couple 2 - primary.png" alt="You can trust us"
-                            class="w-full h-full object-contain"
-                            onerror="this.src='https://via.placeholder.com/128?text=Trust'">
-                    </div>
-                    <h3 class="text-lg md:text-xl font-semibold text-[#202246] mb-2 md:mb-3">You can trust us</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed px-4 md:px-0">We've won comparison website of the
-                        year the last 3 years running.</p>
-                </div>
-
-                <div class="flex flex-col items-center text-center gsap-child">
-                    <div class="w-24 h-24 md:w-32 md:h-32 mb-4 md:mb-6 relative flex items-center justify-center">
-                        <img src="./images/FHC - ILLOS - People - Guy 1 - primary.png" alt="We'll save you money"
-                            class="w-full h-full object-contain"
-                            onerror="this.src='https://via.placeholder.com/128?text=Save'">
-                    </div>
-                    <h3 class="text-lg md:text-xl font-semibold text-[#202246] mb-2 md:mb-3">We'll save you money</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed px-4 md:px-0">We regularly save customers over
-                        hundreds of dollars a year by switching providers.</p>
-                </div>
-
-                <div class="flex flex-col items-center text-center gsap-child">
-                    <div class="w-24 h-24 md:w-32 md:h-32 mb-4 md:mb-6 relative flex items-center justify-center">
-                        <img src="./images/FHC - ILLOS - Comms - Comparison 1 - primary.png" alt="It's completely free!"
-                            class="w-full h-full object-contain"
-                            onerror="this.src='https://via.placeholder.com/128?text=Free'">
-                    </div>
-                    <h3 class="text-lg md:text-xl font-semibold text-[#202246] mb-2 md:mb-3">It's completely free!</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed px-4 md:px-0">We don't cost a cent! Our providers
-                        pay us for the service.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="shape-divider">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none"
-                style="background: #E0EEF8;">
-                <path
-                    d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
-                    fill="#F6FBFF"></path>
-            </svg>
-        </div>
-    </div>
-
-    <section class="overflow-hidden md:overflow-visible pt-16 pb-32 md:pb-48 overflow-hidden relative">
-        <div class="text-center mb-10">
-            <h3 class="font-display text-xl md:text-2xl font-semibold text-[#202246]">Loved by Australians</h3>
-            <div class="flex justify-center items-center gap-1 mt-2 text-yellow-400">
-                <i data-lucide="star" class="w-4 h-4 md:w-5 md:h-5 fill-current"></i>
-                <i data-lucide="star" class="w-4 h-4 md:w-5 md:h-5 fill-current"></i>
-                <i data-lucide="star" class="w-4 h-4 md:w-5 md:h-5 fill-current"></i>
-                <i data-lucide="star" class="w-4 h-4 md:w-5 md:h-5 fill-current"></i>
-                <i data-lucide="star" class="w-4 h-4 md:w-5 md:h-5 fill-current"></i>
-                <span class="text-xs md:text-sm font-regular ml-2 text-[#202246]">(4.9/5 from 2,300+ reviews)</span>
-            </div>
-        </div>
-
-        <div class="relative w-full overflow-hidden">
-            <div class="flex w-max animate-marquee hover:[animation-play-state:paused] py-2">
-                <div class="flex shrink-0">
-                    <div class="review-card">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div
-                                class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">
-                                SJ</div>
-                            <div>
-                                <p class="font-bold text-sm">Sarah Jenkins</p>
-                                <p class="text-xs text-slate-400">2 days ago</p>
-                            </div>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                                class="w-5 h-5 ml-auto" alt="Google">
+                        class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow gsap-child cursor-pointer group">
+                        <div class="h-48 bg-gray-200 w-full overflow-hidden">
+                            <img src="./images/article2.jpg" alt="Article"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                                onerror="this.src='https://placehold.co/400x250?text=Article'">
                         </div>
-                        <p class="text-sm text-slate-600 italic">"Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Found a better deal in minutes!"</p>
-                    </div>
-                    <div class="review-card">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div
-                                class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
-                                MK</div>
-                            <div>
-                                <p class="font-bold text-sm">Mike K.</p>
-                                <p class="text-xs text-slate-400">1 week ago</p>
-                            </div>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                                class="w-5 h-5 ml-auto" alt="Google">
+                        <div class="p-6">
+                            <div class="text-sm font-semibold text-brand-cyan mb-2">Tips & Tricks</div>
+                            <h3 class="text-xl font-bold text-brand-navy mb-3">When to re-evaluate your insurance</h3>
+                            <p class="text-sm text-gray-500 mb-4">Lorem ipsum dolor sit amet, consectetuer adipiscing
+                                elit, sed diam nonummy...</p>
+                            <p class="text-xs font-bold text-brand-navy uppercase">Author name, 5 March 2026</p>
                         </div>
-                        <p class="text-sm text-slate-600 italic">"Super transparent. No hidden fees. The team was
-                            incredibly helpful with my NDIS plan."</p>
-                    </div>
-                    <div class="review-card">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div
-                                class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">
-                                AL</div>
-                            <div>
-                                <p class="font-bold text-sm">Amanda Lee</p>
-                                <p class="text-xs text-slate-400">3 days ago</p>
-                            </div>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                                class="w-5 h-5 ml-auto" alt="Google">
-                        </div>
-                        <p class="text-sm text-slate-600 italic">"Finally a site that is actually fair. Saved me $500 on
-                            my hospital cover."</p>
-                    </div>
-                    <div class="review-card">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div
-                                class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold">
-                                TR</div>
-                            <div>
-                                <p class="font-bold text-sm">Tom Richards</p>
-                                <p class="text-xs text-slate-400">Yesterday</p>
-                            </div>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                                class="w-5 h-5 ml-auto" alt="Google">
-                        </div>
-                        <p class="text-sm text-slate-600 italic">"Lorem ipsum dolor sit amet. Great experience from
-                            start to finish."</p>
-                    </div>
-                </div>
-
-                <div class="flex shrink-0">
-                    <div class="review-card">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div
-                                class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">
-                                SJ</div>
-                            <div>
-                                <p class="font-bold text-sm">Sarah Jenkins</p>
-                                <p class="text-xs text-slate-400">2 days ago</p>
-                            </div>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                                class="w-5 h-5 ml-auto" alt="Google">
-                        </div>
-                        <p class="text-sm text-slate-600 italic">"Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Found a better deal in minutes!"</p>
-                    </div>
-                    <div class="review-card">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div
-                                class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
-                                MK</div>
-                            <div>
-                                <p class="font-bold text-sm">Mike K.</p>
-                                <p class="text-xs text-slate-400">1 week ago</p>
-                            </div>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                                class="w-5 h-5 ml-auto" alt="Google">
-                        </div>
-                        <p class="text-sm text-slate-600 italic">"Super transparent. No hidden fees. The team was
-                            incredibly helpful with my NDIS plan."</p>
-                    </div>
-                    <div class="review-card">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div
-                                class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">
-                                AL</div>
-                            <div>
-                                <p class="font-bold text-sm">Amanda Lee</p>
-                                <p class="text-xs text-slate-400">3 days ago</p>
-                            </div>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                                class="w-5 h-5 ml-auto" alt="Google">
-                        </div>
-                        <p class="text-sm text-slate-600 italic">"Finally a site that is actually fair. Saved me $500 on
-                            my hospital cover."</p>
-                    </div>
-                    <div class="review-card">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div
-                                class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold">
-                                TR</div>
-                            <div>
-                                <p class="font-bold text-sm">Tom Richards</p>
-                                <p class="text-xs text-slate-400">Yesterday</p>
-                            </div>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                                class="w-5 h-5 ml-auto" alt="Google">
-                        </div>
-                        <p class="text-sm text-slate-600 italic">"Lorem ipsum dolor sit amet. Great experience from
-                            start to finish."</p>
                     </div>
                 </div>
             </div>
-
-            <div
-                class="absolute top-0 left-0 w-16 md:w-32 h-full bg-gradient-to-r from-white to-transparent pointer-events-none z-10">
+            <div class="shape-divider z-20">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none"
+                    style="background: #EAF3FA;">
+                    <path
+                        d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
+                        fill="#202246"></path>
+                </svg>
             </div>
-            <div
-                class="absolute top-0 right-0 w-16 md:w-32 h-full bg-gradient-to-l from-white to-transparent pointer-events-none z-10">
-            </div>
-        </div>
-
-        <div class="shape-divider z-20">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" preserveAspectRatio="none"
-                style="background: #F6FBFF;">
-                <path
-                    d="M 0 100 Q 50 60, 100 100 T 200 100 T 300 100 T 400 100 T 500 100 T 600 100 T 700 100 T 800 100 T 900 100 T 1000 100 T 1100 100 T 1200 100 T 1300 100 T 1400 100 T 1500 100 T 1600 100 V 200 H 0 Z"
-                    fill="#202246"></path>
-            </svg>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <footer class="overflow-hidden md:overflow-visible bg-brand-navy text-white pt-16 pb-8 relative z-30 -mt-1">
         <div class="max-w-7xl container mx-auto px-6">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-12 md:mb-16 gsap-section">
                 <!-- <div class="gsap-child block md:hidden bg-white rounded p-4">
                     <img class="h-8 md:h-10 w-fit object-contain relative z-10" src="./images/fair-v10.gif"
-                        alt="logo gif" onerror="this.src='https://via.placeholder.com/150x40?text=Fair.com.au'">
+                        alt="logo gif" onerror="this.src='https://placehold.co/150x40?text=Fair.com.au'">
                 </div> -->
                 <div class="gsap-child">
                     <h4 class="font-semibold text-lg mb-4">Compare</h4>
@@ -980,19 +1189,7 @@
         AOS.init({ duration: 1000, once: true, easing: 'ease-in-out' });
         lucide.createIcons();
 
-        // Magnetic listener
-        document.querySelectorAll('.btn-creative').forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                btn.style.transform = `translate(${x * 0.12}px, ${y * 0.12}px)`;
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translate(0px, 0px)';
-            });
-        });
-
+        // Home logic
         // Dropdown Logic
         const heroDropdownBtn = document.getElementById('hero-dropdown-btn');
         const heroDropdownMenu = document.getElementById('hero-dropdown-menu');
@@ -1018,60 +1215,132 @@
             }
         });
 
-        // Mobile Menu Logic
+        // ==========================================
+        // 1. BULLETPROOF VANILLA JS ROUTING
+        // ==========================================
+        function switchPage() {
+            // Get the requested page from the URL hash (default to home)
+            const hash = window.location.hash || '#home';
+            const targetId = hash === '#singles' ? 'view-singles' : 'view-home';
+
+            // 1. Hide all views completely
+            document.querySelectorAll('.view-section').forEach(view => {
+                view.style.display = 'none';
+                view.classList.remove('animate-fade-in'); // Reset animation
+            });
+
+            // 2. Show the target view and trigger CSS animation
+            const activeView = document.getElementById(targetId);
+            if (activeView) {
+                activeView.style.display = 'block';
+                void activeView.offsetWidth; // Force DOM reflow to restart animation
+                activeView.classList.add('animate-fade-in');
+            }
+
+            // 3. Update Navigation Link Colors (Cyan for active)
+            document.querySelectorAll('nav a').forEach(link => {
+                const href = link.getAttribute('href');
+
+                // Only affect our internal # links
+                if (href && href.startsWith('#')) {
+                    if (href === hash) {
+                        link.classList.remove('text-slate-500');
+                        link.classList.add('text-brand-cyan', 'font-bold');
+                    } else {
+                        link.classList.remove('text-brand-cyan', 'font-bold');
+                        link.classList.add('text-slate-500');
+                    }
+                }
+            });
+
+            // 4. Reset scroll to top
+            window.scrollTo(0, 0);
+
+            // 5. Tell GSAP to recalculate ONLY after the new page is visible
+            if (typeof ScrollTrigger !== 'undefined') {
+                setTimeout(() => {
+                    ScrollTrigger.refresh();
+                }, 100);
+            }
+        }
+
+        // Listen for URL changes
+        window.addEventListener('hashchange', switchPage);
+
+        // 2. MOBILE MENU LOGIC
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const iconMenu = document.getElementById('icon-menu');
         const iconClose = document.getElementById('icon-close');
         let isMenuOpen = false;
 
-        // Mobile Health Insurance Accordion Logic
-        const mobileHealthBtn = document.getElementById('mobile-health-btn');
-        const mobileHealthMenu = document.getElementById('mobile-health-menu');
-        const mobileHealthIcon = document.getElementById('mobile-health-icon');
+        function closeMobileMenu() {
+            isMenuOpen = false;
+            mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+            mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            iconClose.classList.add('hidden');
+            iconClose.classList.remove('block');
+            iconMenu.classList.remove('hidden');
+            iconMenu.classList.add('block');
+            document.body.style.overflow = '';
+        }
 
-        mobileMenuBtn.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            if (isMenuOpen) {
-                mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
-                mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                    mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                    mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+                    iconMenu.classList.add('hidden'); iconMenu.classList.remove('block');
+                    iconClose.classList.remove('hidden'); iconClose.classList.add('block');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    closeMobileMenu();
+                }
+            });
+        }
 
-                // Hide hamburger, show X
-                iconMenu.classList.add('hidden');
-                iconMenu.classList.remove('block');
-                iconClose.classList.remove('hidden');
-                iconClose.classList.add('block');
-
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
-            } else {
-                mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
-                mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
-
-                // Hide X, show hamburger
-                iconClose.classList.add('hidden');
-                iconClose.classList.remove('block');
-                iconMenu.classList.remove('hidden');
-                iconMenu.classList.add('block');
-
-                document.body.style.overflow = '';
-            }
+        document.getElementById('mobile-health-btn')?.addEventListener('click', () => {
+            document.getElementById('mobile-health-menu').classList.toggle('hidden');
+            document.getElementById('mobile-health-menu').classList.toggle('flex');
+            document.getElementById('mobile-health-icon').classList.toggle('rotate-90');
         });
-        mobileHealthBtn.addEventListener('click', () => {
-            // Toggle the display of the sub-menu
-            mobileHealthMenu.classList.toggle('hidden');
-            mobileHealthMenu.classList.toggle('flex');
 
-            // Rotate the chevron arrow down
-            mobileHealthIcon.classList.toggle('rotate-90');
-        });
-    </script>
+        // 3. GSAP ANIMATIONS
+        function initGSAPAnimations() {
+            // Kill existing triggers to prevent overlap when swapping pages
+            ScrollTrigger.getAll().forEach(t => t.kill());
 
-    <script>
+            const sections = gsap.utils.toArray('.view-section:not(.hidden) .gsap-section');
+            sections.forEach(section => {
+                const children = section.querySelectorAll('.gsap-child');
+                gsap.set(children, { autoAlpha: 0, y: 40 });
+
+                ScrollTrigger.create({
+                    trigger: section,
+                    start: "top 85%",
+                    onEnter: () => {
+                        gsap.to(children, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out", overwrite: "auto" });
+                    },
+                    once: true
+                });
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             gsap.registerPlugin(ScrollTrigger);
 
             const mainTimeline = gsap.timeline();
             document.body.style.overflow = 'hidden';
+            const brandColors = {
+                'brand-blue': '#50A7DA',
+                'brand-green': '#4ADE80',
+                'brand-orange': '#FB923C',
+                'brand-yellow': '#FACC15',
+                'brand-red': '#F87171'
+            };
+
+            const navLinks = document.querySelectorAll('.nav-link');
 
             mainTimeline.fromTo("#loader-logo",
                 { opacity: 0, y: 30 },
@@ -1106,7 +1375,35 @@
                 .fromTo(".hero-svg-image",
                     { opacity: 0, scale: 1.05 },
                     { opacity: 1, scale: 1, duration: 1, ease: "power3.out" }, ">-0.5"
-                );
+                )
+                .to(navLinks, {
+                    duration: 0.75,
+                    backgroundColor: (i, el) => {
+                        if (el.classList.contains('hover:bg-brand-blue')) return brandColors['brand-blue'];
+                        if (el.classList.contains('hover:bg-brand-green')) return brandColors['brand-green'];
+                        if (el.classList.contains('hover:bg-brand-orange')) return brandColors['brand-orange'];
+                        if (el.classList.contains('hover:bg-brand-yellow')) return brandColors['brand-yellow'];
+                        if (el.classList.contains('hover:bg-brand-red')) return brandColors['brand-red'];
+                        return 'transparent';
+                    },
+                    borderColor: (i, el) => {
+                        if (el.classList.contains('hover:border-brand-blue')) return brandColors['brand-blue'];
+                        if (el.classList.contains('hover:border-brand-green')) return brandColors['brand-green'];
+                        if (el.classList.contains('hover:border-brand-orange')) return brandColors['brand-orange'];
+                        if (el.classList.contains('hover:border-brand-yellow')) return brandColors['brand-yellow'];
+                        if (el.classList.contains('hover:border-brand-red')) return brandColors['brand-red'];
+                        return 'currentColor';
+                    },
+                    stagger: {
+                        each: 0.15,
+                        yoyo: true,
+                        repeat: 1
+                    },
+                    ease: "power3.inOut",
+                    onComplete: () => {
+                        gsap.set(navLinks, { clearProps: "backgroundColor,borderColor" });
+                    }
+                }, "-=0.5");
 
             const sections = gsap.utils.toArray('.gsap-section');
             sections.forEach(section => {
@@ -1160,6 +1457,54 @@
                         el.style.transform = `translateY(${scrollY * speed}px)`;
                     });
                 }
+            }
+            fetch('reviews.html')
+                .then(response => response.text())
+                .then(data => {
+                    const ctaContainers = document.querySelectorAll('.reviews-container');
+                    ctaContainers.forEach(container => {
+                        container.innerHTML = data;
+                    });
+                })
+                .catch(error => console.error('Error loading review:', error));
+            fetch('button.html')
+                .then(response => response.text())
+                .then(data => {
+                    const ctaContainers = document.querySelectorAll('.button-container');
+                    ctaContainers.forEach(container => {
+                        container.innerHTML = data;
+                    });
+                })
+                .catch(error => console.error('Error loading button:', error));
+
+            const track = document.getElementById('brand-track');
+            const prevBtn = document.getElementById('brand-prev');
+            const nextBtn = document.getElementById('brand-next');
+
+            if (track && prevBtn && nextBtn) {
+                // Calculate how far to scroll (width of one item + gap)
+                const getScrollAmount = () => {
+                    const item = track.querySelector('div');
+                    // Fallback gap is 24px (md:gap-6)
+                    const gap = parseInt(window.getComputedStyle(track).gap) || 24;
+                    return item.offsetWidth + gap;
+                };
+
+                prevBtn.addEventListener('click', () => {
+                    gsap.to(track, {
+                        scrollLeft: track.scrollLeft - getScrollAmount(),
+                        duration: 0.4,         // <-- Change this to make it slower/faster (in seconds)
+                        ease: "power2.Out"   // <-- Smooth acceleration and deceleration
+                    });
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    gsap.to(track, {
+                        scrollLeft: track.scrollLeft + getScrollAmount(),
+                        duration: 0.4,         // <-- Change this to make it slower/faster (in seconds)
+                        ease: "power2.Out"
+                    });
+                });
             }
         });
     </script>
